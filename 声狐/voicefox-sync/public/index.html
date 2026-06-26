@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VoiceFox 声狐 AI 外呼管理</title>
+<style>
+  :root {
+    --primary: #1a73e8;
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --text: #1d1d1f;
+    --text2: #5f6368;
+    --green: #0d904f;
+    --red: #d93025;
+    --blue: #1a73e8;
+    --orange: #e37400;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .header-left h1 { font-size: 18px; font-weight: 600; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  }
+  .badge.online { background: #e6f4ea; color: var(--green); }
+  .badge.offline { background: #fce8e6; color: var(--red); }
+  .badge .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .badge.online .dot { background: var(--green); }
+  .badge.offline .dot { background: var(--red); }
+  .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--card); cursor: pointer; font-size: 12px; font-weight: 500;
+    color: var(--text); transition: background .15s;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .btn:hover { background: #f5f5f5; }
+  .btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .btn.primary:hover { background: #1557b0; }
+  .btn.small { padding: 4px 10px; font-size: 12px; }
+  .btn.danger { background: var(--red); border-color: var(--red); color: #fff; }
+  .btn.danger:hover { background: #b3261e; }
+  .btn.green { background: var(--green); border-color: var(--green); color: #fff; }
+  .btn.green:hover { background: #0b7a42; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .sync-bar {
+    padding: 8px 24px; background: var(--card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text2);
+    flex-wrap: wrap;
+  }
+  .sync-bar .stat { cursor: pointer; }
+  .sync-bar .stat:hover { color: var(--primary); }
+  .answered { color: var(--green); font-weight: 600; }
+  .no-answer { color: var(--orange); font-weight: 600; }
+  .busy { color: var(--blue); font-weight: 600; }
+  .failed { color: var(--red); font-weight: 600; }
+  .total { color: var(--text); font-weight: 600; }
+
+  .settings-bar {
+    padding: 8px 24px; background: var(--card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px;
+  }
+  .settings-bar label { font-weight: 500; color: var(--text2); }
+  .settings-bar input, .settings-bar select {
+    padding: 6px 10px; border: 1px solid var(--border); border-radius: 5px;
+    font-size: 13px; outline: none;
+  }
+  .settings-bar input:focus, .settings-bar select:focus {
+    border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,.12);
+  }
+
+  .login-bar {
+    padding: 8px 24px; background: var(--card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px;
+  }
+  .login-bar input { padding: 6px 10px; border: 1px solid var(--border); border-radius: 5px; font-size: 13px; outline: none; width: 200px; }
+  .login-bar input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,.12); }
+  .login-bar .user-info { color: var(--green); font-weight: 500; }
+
+  .tabs {
+    display: flex; gap: 0; border-bottom: 1px solid var(--border);
+    background: var(--card); padding: 0 24px;
+  }
+  .tabs .tab {
+    padding: 10px 18px; cursor: pointer; font-size: 13px; font-weight: 500;
+    color: var(--text2); border-bottom: 2px solid transparent; transition: all .15s;
+  }
+  .tabs .tab:hover { color: var(--text); background: #f8f9fa; }
+  .tabs .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .table-wrap { padding: 0 24px 16px; overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse; background: var(--card);
+    border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    font-size: 13px;
+  }
+  thead th {
+    background: #f8f9fa; padding: 9px 10px; text-align: left; font-weight: 600;
+    color: var(--text2); border-bottom: 2px solid var(--border);
+    white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  thead th:hover { background: #f0f1f3; }
+  thead th .sort { margin-left: 3px; opacity: .3; }
+  thead th.sorted .sort { opacity: 1; color: var(--primary); }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f8f9ff; }
+  tbody td {
+    padding: 7px 10px; white-space: nowrap; max-width: 200px;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  tbody td .tag {
+    display: inline-block; padding: 1px 7px; border-radius: 10px;
+    font-size: 11px; font-weight: 500;
+  }
+  tbody td .tag.answered { background: #e6f4ea; color: var(--green); }
+  tbody td .tag.no_answer { background: #fef7e0; color: var(--orange); }
+  tbody td .tag.busy { background: #e8f0fe; color: var(--blue); }
+  tbody td .tag.failed { background: #fce8e6; color: var(--red); }
+  tbody td .tag.pending { background: #f0f0f0; color: var(--text2); }
+  tbody td .collect-info { font-size: 11px; color: var(--text2); line-height: 1.4; }
+
+  .pagination {
+    padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .pagination .count { font-size: 13px; color: var(--text2); }
+  .pagination .pages { display: flex; gap: 3px; align-items: center; }
+  .pagination .pages .page-btn {
+    padding: 4px 9px; border: 1px solid var(--border); border-radius: 4px;
+    background: var(--card); cursor: pointer; font-size: 12px; min-width: 30px; text-align: center;
+  }
+  .pagination .pages .page-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .pagination .pages .page-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
+
+  .stats-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px; padding: 16px 24px;
+  }
+  .stats-card {
+    background: var(--card); border-radius: 8px; padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  .stats-card .label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .stats-card .value { font-size: 22px; font-weight: 700; }
+  .stats-card .value.green { color: var(--green); }
+  .stats-card .value.orange { color: var(--orange); }
+  .stats-card .value.blue { color: var(--blue); }
+  .stats-card .value.red { color: var(--red); }
+
+  .form-wrap {
+    padding: 16px 24px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;
+  }
+  .form-wrap .field { display: flex; flex-direction: column; gap: 4px; }
+  .form-wrap .field label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .form-wrap .field input, .form-wrap .field select {
+    padding: 6px 10px; border: 1px solid var(--border); border-radius: 5px;
+    font-size: 13px; outline: none;
+  }
+  .form-wrap .field input:focus, .form-wrap .field select:focus {
+    border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,.12);
+  }
+
+  /* Modal */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.4); z-index: 1000; align-items: flex-start;
+    justify-content: center; padding: 40px 20px; overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border-radius: 10px; max-width: 900px; width: 100%;
+    box-shadow: 0 8px 30px rgba(0,0,0,.15); overflow: hidden;
+  }
+  .modal-header {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 15px; font-weight: 600;
+  }
+  .modal-header .close-btn {
+    cursor: pointer; font-size: 20px; color: var(--text2); background: none; border: none;
+  }
+  .modal-header .close-btn:hover { color: var(--text); }
+  .modal-body { padding: 16px 20px; max-height: 75vh; overflow-y: auto; }
+
+  /* Detail modal sections */
+  .detail-section { margin-bottom: 16px; }
+  .detail-section h3 {
+    font-size: 13px; font-weight: 600; color: var(--text); 
+    margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .detail-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 13px;
+  }
+  .detail-grid .field-row { display: flex; padding: 3px 0; }
+  .detail-grid .field-label { width: 70px; color: var(--text2); flex-shrink: 0; }
+  .detail-grid .field-value { color: var(--text); word-break: break-all; }
+  .detail-grid .field-value a { color: var(--primary); text-decoration: none; }
+  .detail-grid .field-value a:hover { text-decoration: underline; }
+
+  /* Collect items */
+  .collect-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .collect-item {
+    background: #f5f7fa; border-radius: 6px; padding: 6px 10px; font-size: 12px;
+  }
+  .collect-item .q { color: var(--text2); }
+  .collect-item .a { color: var(--text); font-weight: 500; }
+
+  /* Transcript */
+  .transcript-wrap { padding: 0; }
+  .transcript-item {
+    padding: 10px 12px; margin-bottom: 8px; border-radius: 8px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .transcript-item.ai { background: #e8f0fe; border-left: 3px solid var(--primary); }
+  .transcript-item.client { background: #e6f4ea; border-left: 3px solid var(--green); }
+  .transcript-item.system { background: #f0f0f0; border-left: 3px solid var(--text2); }
+  .transcript-item .speaker { font-weight: 600; font-size: 12px; margin-bottom: 2px; }
+  .transcript-item.ai .speaker { color: var(--primary); }
+  .transcript-item.client .speaker { color: var(--green); }
+  .transcript-item.system .speaker { color: var(--text2); }
+  .transcript-item .time { font-size: 11px; color: var(--text2); float: right; }
+
+  /* Summary section */
+  .summary-box {
+    background: #fef7e0; border-left: 3px solid var(--orange);
+    padding: 10px 12px; border-radius: 6px; font-size: 13px; line-height: 1.6;
+  }
+
+  .log-entry {
+    padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .log-entry:last-child { border-bottom: none; }
+  .log-entry .log-time { color: var(--text2); font-size: 12px; margin-bottom: 4px; }
+  .log-entry .log-summary { margin-bottom: 4px; }
+
+  .content-area { padding: 10px 0; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+
+  @media (max-width: 768px) {
+    .header { padding: 10px 12px; }
+    .header-left h1 { font-size: 15px; }
+    .sync-bar, .settings-bar, .login-bar { padding: 6px 12px; }
+    .login-bar input { width: 140px; }
+    .table-wrap { padding: 0 6px 6px; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 5px 6px; }
+    .modal { max-width: 100%; margin: 10px; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .stats-cards { grid-template-columns: repeat(2, 1fr); padding: 10px 12px; }
+    .tabs { padding: 0 12px; overflow-x: auto; }
+    .tabs .tab { padding: 10px 12px; white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>VoiceFox 声狐 AI 外呼</h1>
+    <span class="badge offline" id="statusBadge">
+      <span class="dot"></span> <span id="statusText">未登录</span>
+    </span>
+    <span id="projectDisplay" style="font-size:12px;color:var(--text2);display:none"></span>
+  </div>
+  <div class="header-right">
+    <button class="btn primary small" onclick="manualSync()" id="syncBtn">刷新数据</button>
+    <button class="btn small" onclick="showLogModal()" id="logBtn">同步日志</button>
+  </div>
+</div>
+
+<div class="login-bar" id="loginBar">
+  <label>邮箱</label>
+  <input type="email" id="emailInput" placeholder="your@email.com">
+  <label>密码</label>
+  <input type="password" id="passwordInput" placeholder="密码">
+  <button class="btn primary small" onclick="doLogin()">登录</button>
+  <span id="loginStatus" style="font-size:12px;color:var(--text2)"></span>
+</div>
+
+<div class="sync-bar">
+  <span class="stat" id="syncInfo">等待登录...</span>
+  <span class="info" id="errorDisplay" style="display:none"></span>
+</div>
+
+<div class="settings-bar">
+  <label>自动刷新</label>
+  <select id="intervalSelect" onchange="changeInterval()">
+    <option value="5000">5 秒</option>
+    <option value="10000">10 秒</option>
+    <option value="15000" selected>15 秒</option>
+    <option value="30000">30 秒</option>
+    <option value="60000">1 分钟</option>
+  </select>
+  <label>搜索</label>
+  <input type="text" id="searchInput" placeholder="号码 / 任务名" oninput="filterTable()">
+  <select id="statusFilter" onchange="filterTable()">
+    <option value="">全部状态</option>
+    <option value="answered">已接通</option>
+    <option value="no_answer">无人接听</option>
+    <option value="busy">占线</option>
+    <option value="failed">失败</option>
+  </select>
+</div>
+
+<div class="tabs" id="tabBar">
+  <div class="tab active" data-tab="calls" onclick="switchTab('calls')">通话记录</div>
+  <div class="tab" data-tab="tasks" onclick="switchTab('tasks')">任务管理</div>
+  <div class="tab" data-tab="create" onclick="switchTab('create')">创建任务</div>
+  <div class="tab" data-tab="stats" onclick="switchTab('stats')">数据统计</div>
+</div>
+
+<!-- Tab: Calls -->
+<div class="tab-content active" id="tabCalls">
+  <div class="table-wrap">
+    <table><thead><tr id="callsHead"></tr></thead><tbody id="callsBody"></tbody></table>
+  </div>
+  <div class="pagination">
+    <span class="count" id="callsCount">显示 0 条</span>
+    <div class="pages" id="callsPagination"></div>
+  </div>
+</div>
+
+<!-- Tab: Tasks -->
+<div class="tab-content" id="tabTasks">
+  <div class="form-wrap" style="border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:0">
+    <div class="field">
+      <label>任务名称</label>
+      <input type="text" id="taskSearchName" placeholder="搜索任务名" oninput="loadTaskList()">
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table><thead><tr><th>任务名称</th><th>ID</th><th>状态</th><th>数量</th><th>创建时间</th><th>操作</th></tr></thead><tbody id="tasksBody"></tbody></table>
+  </div>
+</div>
+
+<!-- Tab: Create Task -->
+<div class="tab-content" id="tabCreate">
+  <div class="form-wrap">
+    <div class="field">
+      <label>手机号 <span style="color:var(--red)">*</span></label>
+      <input type="text" id="createPhone" placeholder="13800138000">
+    </div>
+    <div class="field">
+      <label>任务名称</label>
+      <input type="text" id="createName" placeholder="可选，默认为 auto_手机号">
+    </div>
+    <div class="field">
+      <label>AI 版本 ID</label>
+      <input type="number" id="createVid" value="42558">
+    </div>
+    <div class="field" style="align-self:flex-end">
+      <button class="btn primary" onclick="createTask()">创建外呼任务</button>
+    </div>
+  </div>
+  <div id="createResult" style="padding:0 24px 16px;font-size:13px;color:var(--text2)"></div>
+</div>
+
+<!-- Tab: Stats -->
+<div class="tab-content" id="tabStats">
+  <div class="stats-cards" id="statsCards">
+    <div class="stats-card"><div class="label">总通话数</div><div class="value" id="statTotal">--</div></div>
+    <div class="stats-card"><div class="label">已接通</div><div class="value green" id="statAnswered">--</div></div>
+    <div class="stats-card"><div class="label">无人接听</div><div class="value orange" id="statNoAnswer">--</div></div>
+    <div class="stats-card"><div class="label">占线</div><div class="value blue" id="statBusy">--</div></div>
+    <div class="stats-card"><div class="label">失败</div><div class="value red" id="statFailed">--</div></div>
+    <div class="stats-card"><div class="label">最后同步</div><div class="value" id="statLastSync" style="font-size:14px">--</div></div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="detailTitle">通话详情</span>
+      <button class="close-btn" onclick="closeDetailModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="detailBody">
+      <div class="empty-state">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Log Modal -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span>同步日志</span>
+      <button class="close-btn" onclick="closeLogModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="logBody">
+      <div class="empty-state">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var allCalls = [], filteredCalls = [];
+var allTasks = [];
+var sortField = 'startAt', sortDir = -1, currentPage = 1, PAGE_SIZE = 20;
+var polling = false;
+
+// ---------- Utils ----------
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatTime(ts) { if (!ts) return '--'; try { return new Date(ts).toLocaleString(); } catch(e) { return ts; } }
+function formatTimeShort(ts) { if (!ts) return '--'; try { return new Date(ts).toLocaleString().replace(/^(\d{4}\/)/,''); } catch(e) { return ts; } }
+function formatDuration(sec) { if (!sec && sec !== 0) return '--'; var m = Math.floor(sec / 60); var s = sec % 60; return m > 0 ? m + '分' + s + '秒' : s + '秒'; }
+
+// ---------- Init ----------
+function loadCachedData() {
+  try {
+    var raw = localStorage.getItem('voicefoxCalls');
+    if (raw) {
+      var data = JSON.parse(raw);
+      if (data && data.list && data.list.length > 0) {
+        allCalls = data.list;
+        filterTable();
+        var t = data.time ? formatTime(data.time) : '';
+        document.getElementById('syncInfo').innerHTML = (t ? t + ' - ' : '') + allCalls.length + ' 条缓存';
+      }
+    }
+  } catch(e) {}
+}
+function saveCachedData() {
+  try {
+    localStorage.setItem('voicefoxCalls', JSON.stringify({ list: allCalls, time: new Date().toISOString() }));
+  } catch(e) {}
+}
+
+function init() {
+  loadCachedData();
+  renderCallsHeaders();
+  fetchStatus();
+  startPolling();
+}
+
+// ---------- Login ----------
+async function doLogin() {
+  var email = document.getElementById('emailInput').value.trim();
+  var password = document.getElementById('passwordInput').value.trim();
+  if (!email || !password) { document.getElementById('loginStatus').textContent = '请填写邮箱和密码'; return; }
+  document.getElementById('loginStatus').textContent = '登录中...';
+  try {
+    var r = await fetch('/api/login', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email: email, password: password }),
+    });
+    var d = await r.json();
+    if (d.success) {
+      document.getElementById('loginStatus').textContent = '登录成功';
+      fetchStatus();
+      manualSync();
+      loadTaskList();
+    } else {
+      document.getElementById('loginStatus').textContent = '登录失败: ' + (d.error || '未知错误');
+    }
+  } catch(e) { document.getElementById('loginStatus').textContent = '网络错误: ' + e.message; }
+}
+
+// ---------- Tab ----------
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelector('.tab[data-tab="' + name + '"]').classList.add('active');
+  document.getElementById('tab' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  if (name === 'tasks') loadTaskList();
+  if (name === 'stats') updateStats();
+}
+
+// ---------- Status ----------
+async function fetchStatus() {
+  try {
+    var r = await fetch('/api/status');
+    var d = await r.json();
+    var badge = document.getElementById('statusBadge');
+    var st = document.getElementById('statusText');
+    if (d.loggedIn) {
+      badge.className = 'badge online'; st.textContent = '已登录';
+      document.getElementById('projectDisplay').style.display = 'inline';
+      document.getElementById('projectDisplay').textContent = '项目: ' + (d.projectId || '--') + ' | 缓存: ' + (d.totalCached || d.cachedCallCount || 0) + ' 条';
+      document.getElementById('loginBar').style.display = 'none';
+    } else {
+      badge.className = 'badge offline'; st.textContent = d.loginError || '未登录';
+      document.getElementById('projectDisplay').style.display = 'none';
+      document.getElementById('loginBar').style.display = 'flex';
+    }
+    if (d.lastSyncInfo) showSyncInfo(d.lastSyncInfo.info, d.lastSyncInfo.time);
+    if (d.fetchError) showError(d.fetchError); else showError(null);
+    if (d.pollIntervalMs) {
+      var sel = document.getElementById('intervalSelect');
+      for (var i = 0; i < sel.options.length; i++)
+        if (parseInt(sel.options[i].value) === d.pollIntervalMs) { sel.value = d.pollIntervalMs; break; }
+    }
+  } catch(e) {}
+}
+
+function showSyncInfo(info, time) {
+  var el = document.getElementById('syncInfo');
+  if (!time) { el.textContent = '--'; return; }
+  var t = formatTime(time);
+  if (!info) { el.innerHTML = t + ' - 同步完成'; return; }
+  var parts = [];
+  if (info.answered > 0) parts.push('<span class="answered">' + info.answered + ' 接通</span>');
+  if (info.noAnswer > 0) parts.push('<span class="no-answer">' + info.noAnswer + ' 未接</span>');
+  if (info.busy > 0) parts.push('<span class="busy">' + info.busy + ' 占线</span>');
+  if (info.failed > 0) parts.push('<span class="failed">' + info.failed + ' 失败</span>');
+  if (parts.length === 0) parts.push('<span class="same">无变化</span>');
+  el.innerHTML = t + ' - 共 <span class="total">' + (info.total || info.count) + '</span> 条 ' + parts.join(' ');
+}
+
+function showError(msg) {
+  var el = document.getElementById('errorDisplay');
+  if (msg) { el.style.display = 'inline'; el.textContent = '错误: ' + msg; }
+  else el.style.display = 'none';
+}
+
+// ---------- Calls Table ----------
+var callColumns = [
+  { key: 'taskId', label: '任务ID', sortable: true, width: '60px' },
+  { key: 'taskName', label: '任务名称', sortable: true },
+  { key: 'callee', label: '被叫号码', sortable: true },
+  { key: 'calleeAttribute', label: '归属地', sortable: true },
+  { key: 'caller', label: '主叫', sortable: true },
+  { key: 'hangupReason', label: '状态', sortable: true },
+  { key: 'collect', label: '采集数据', sortable: false },
+  { key: 'duration', label: '时长', sortable: true },
+  { key: 'startAt', label: '时间', sortable: true },
+];
+
+function renderCallsHeaders() {
+  var h = '';
+  callColumns.forEach(function(c) {
+    var s = sortField === c.key;
+    h += '<th style="' + (c.width ? 'width:' + c.width + ';' : '') + '" class="' + (s?'sorted':'') + '" onclick="' + (c.sortable ? "sortCallsBy('" + c.key + "')" : '') + '" style="' + (c.sortable ? 'cursor:pointer' : 'cursor:default') + '">'
+      + c.label + (c.sortable ? '<span class="sort">' + (s ? (sortDir > 0 ? '\u25B2' : '\u25BC') : '\u21C5') + '</span>' : '') + '</th>';
+  });
+  h += '<th style="width:60px">操作</th>';
+  document.getElementById('callsHead').innerHTML = h;
+}
+
+function getCollectSummary(call) {
+  var cols = call.collect;
+  if (!cols || cols.length === 0) return '';
+  var items = cols[0].items || [];
+  var parts = [];
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].hit && items[i].answer) {
+      parts.push(items[i].question + ': ' + items[i].answer);
+    }
+  }
+  return parts.join(' | ');
+}
+
+function renderCallsBody() {
+  var tbody = document.getElementById('callsBody');
+  if (!filteredCalls || filteredCalls.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="' + (callColumns.length + 2) + '"><div class="empty-state"><p>暂无通话记录</p><p style="font-size:12px;margin-top:4px">登录后自动刷新数据</p></div></td></tr>';
+    return;
+  }
+  var start = (currentPage - 1) * PAGE_SIZE;
+  var pageData = filteredCalls.slice(start, start + PAGE_SIZE);
+  tbody.innerHTML = pageData.map(function(call, i) {
+    var idx = start + i + 1;
+    var reason = call.hangupReason || 'pending';
+    var reasonLabel = reason === 'answered' ? '已接通'
+      : reason === 'no_answer' ? '无人接听'
+      : reason === 'busy' ? '占线'
+      : reason === 'failed' ? '失败'
+      : reason === 'cancel' ? '已取消'
+      : reason === 'timeout' ? '超时'
+      : reason;
+    var tagClass = reason === 'answered' ? 'answered'
+      : reason === 'no_answer' || reason === 'timeout' ? 'no_answer'
+      : reason === 'busy' ? 'busy'
+      : (reason === 'failed' || reason === 'cancel') ? 'failed' : 'pending';
+    var collectStr = getCollectSummary(call);
+    var taskName = (call.task && call.task.name) || '';
+    return '<tr data-id="' + call.id + '">'
+      + '<td style="color:var(--text2);font-size:12px">' + (call.taskId || '') + '</td>'
+      + '<td title="' + esc(taskName) + '">' + esc(taskName).slice(0, 16) + (taskName.length > 16 ? '...' : '') + '</td>'
+      + '<td>' + esc(call.callee || '') + '</td>'
+      + '<td>' + esc(call.calleeAttribute || '') + '</td>'
+      + '<td>' + esc(call.caller || '') + '</td>'
+      + '<td><span class="tag ' + tagClass + '">' + reasonLabel + '</span></td>'
+      + '<td><span class="collect-info" title="' + esc(collectStr) + '">' + esc(collectStr).slice(0, 24) + (collectStr.length > 24 ? '...' : '') + '</span></td>'
+      + '<td>' + formatDuration(call.duration || call.billsec) + '</td>'
+      + '<td>' + formatTimeShort(call.startAt) + '</td>'
+      + '<td><button class="btn small" onclick="showCallDetail(' + call.id + ')">详情</button></td>'
+      + '</tr>';
+  }).join('');
+  updateCallsPagination(filteredCalls.length);
+}
+
+function updateCallsPagination(total) {
+  document.getElementById('callsCount').textContent = '显示 ' + Math.min(PAGE_SIZE, filteredCalls.length) + ' 条，共 ' + total + ' 条';
+  var tp = Math.ceil(total / PAGE_SIZE) || 1;
+  var h = '<button class="page-btn" onclick="goPage(1)" ' + (currentPage <= 1 ? 'disabled' : '') + '>|&lt;</button>';
+  h += '<button class="page-btn" onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>&lt;</button>';
+  var sp = Math.max(1, currentPage - 2), ep = Math.min(tp, currentPage + 2);
+  if (ep - sp < 4) { if (sp === 1) ep = Math.min(tp, sp + 4); else sp = Math.max(1, ep - 4); }
+  for (var p = sp; p <= ep; p++) h += '<button class="page-btn' + (p === currentPage ? ' active' : '') + '" onclick="goPage(' + p + ')">' + p + '</button>';
+  h += '<button class="page-btn" onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= tp ? 'disabled' : '') + '>&gt;</button>';
+  h += '<button class="page-btn" onclick="goPage(' + tp + ')" ' + (currentPage >= tp ? 'disabled' : '') + '>&gt;|</button>';
+  document.getElementById('callsPagination').innerHTML = h;
+}
+
+function goPage(p) { currentPage = p; renderCallsBody(); }
+
+function sortCallsBy(field) {
+  if (sortField === field) sortDir = -sortDir;
+  else { sortField = field; sortDir = -1; }
+  renderCallsHeaders(); sortCallsData(); renderCallsBody();
+}
+
+function sortCallsData() {
+  filteredCalls.sort(function(a, b) {
+    var va, vb;
+    if (sortField === 'taskName') {
+      va = (a.task && a.task.name) || ''; vb = (b.task && b.task.name) || '';
+    } else if (sortField === 'collect') {
+      va = getCollectSummary(a); vb = getCollectSummary(b);
+    } else {
+      va = a[sortField] || ''; vb = b[sortField] || '';
+    }
+    if (sortField === 'startAt' || sortField === 'answerAt' || sortField === 'endAt') {
+      return sortDir * (new Date(va) - new Date(vb));
+    }
+    if (sortField === 'duration' || sortField === 'billsec') {
+      return sortDir * ((parseFloat(va)||0) - (parseFloat(vb)||0));
+    }
+    return sortDir * String(va).localeCompare(String(vb), 'zh-CN');
+  });
+}
+
+function filterTable() {
+  var search = document.getElementById('searchInput').value.toLowerCase().trim();
+  var status = document.getElementById('statusFilter').value;
+  filteredCalls = allCalls.filter(function(c) {
+    if (search) {
+      var matchCallee = (c.callee||'').includes(search);
+      var matchTaskName = ((c.task&&c.task.name)||'').toLowerCase().includes(search);
+      var matchTaskId = (c.taskId||'').toString().includes(search);
+      if (!matchCallee && !matchTaskName && !matchTaskId) return false;
+    }
+    if (status && (c.hangupReason||'') !== status) return false;
+    return true;
+  });
+  currentPage = 1; sortCallsData(); renderCallsBody();
+}
+
+// ---------- Sync ----------
+async function manualSync() {
+  var btn = document.getElementById('syncBtn');
+  btn.disabled = true; btn.textContent = '刷新中...';
+  try {
+    var r = await fetch('/api/sync');
+    var d = await r.json();
+    if (d.success) { await fetchCalls(); if (d.data) showSyncInfo(d.data, new Date().toISOString()); }
+    if (d.error) showError(d.error); else showError(null);
+  } catch(e) { showError(e.message); }
+  btn.disabled = false; btn.textContent = '刷新数据';
+}
+
+async function fetchCalls() {
+  try {
+    var r = await fetch('/api/calls/cached/all');
+    var d = await r.json();
+    if (d.success && d.data) {
+      allCalls = d.data.list || [];
+      filterTable();
+      updateStats();
+      saveCachedData();
+    }
+  } catch(e) {}
+}
+
+async function changeInterval() {
+  var ms = parseInt(document.getElementById('intervalSelect').value);
+  try {
+    await fetch('/api/settings', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pollIntervalMs:ms}) });
+    document.getElementById('syncInfo').innerHTML = new Date().toLocaleString() + ' - 间隔已设为 ' + (ms/1000) + ' 秒';
+  } catch(e) {}
+}
+
+function startPolling() {
+  if (polling) return; polling = true;
+  async function poll() {
+    try {
+      var r = await fetch('/api/sync');
+      var d = await r.json();
+      if (d.success) {
+        await fetchCalls();
+        if (d.data) showSyncInfo(d.data, new Date().toISOString());
+      }
+      if (d.error) showError(d.error); else showError(null);
+      var sr = await fetch('/api/status');
+      var sd = await sr.json();
+      if (sd.loggedIn) {
+        document.getElementById('statusBadge').className = 'badge online';
+        document.getElementById('statusText').textContent = '已登录';
+      }
+    } catch(e) {}
+    setTimeout(poll, 15000);
+  }
+  poll();
+}
+
+// ---------- Stats ----------
+function updateStats() {
+  var total = allCalls.length;
+  var answered = allCalls.filter(function(c) { return c.hangupReason === 'answered'; }).length;
+  var noAnswer = allCalls.filter(function(c) { return c.hangupReason === 'no_answer' || c.hangupReason === 'timeout'; }).length;
+  var busy = allCalls.filter(function(c) { return c.hangupReason === 'busy'; }).length;
+  var failed = allCalls.filter(function(c) { return c.hangupReason === 'failed' || c.hangupReason === 'cancel'; }).length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statAnswered').textContent = answered;
+  document.getElementById('statNoAnswer').textContent = noAnswer;
+  document.getElementById('statBusy').textContent = busy;
+  document.getElementById('statFailed').textContent = failed;
+  document.getElementById('statLastSync').textContent = new Date().toLocaleTimeString();
+}
+
+// ---------- Call Detail (with recording + transcript + collect) ----------
+async function showCallDetail(recordId) {
+  var modal = document.getElementById('detailModal');
+  var body = document.getElementById('detailBody');
+  document.getElementById('detailTitle').textContent = '通话详情 #' + recordId;
+  modal.classList.add('open');
+  body.innerHTML = '<div class="empty-state">加载中...</div>';
+  try {
+    var [detailR, transcriptR, summaryR] = await Promise.all([
+      fetch('/api/calls/' + recordId),
+      fetch('/api/calls/' + recordId + '/transcript'),
+      fetch('/api/calls/' + recordId + '/summary'),
+    ]);
+    var detail = await detailR.json();
+    var transcript = await transcriptR.json();
+    var summary = await summaryR.json();
+    var d = detail.data || {};
+
+    var html = '';
+
+    // === Section 1: Basic Info ===
+    html += '<div class="detail-section"><h3>基本信息</h3><div class="detail-grid">';
+    html += '<div class="field-row"><span class="field-label">被叫</span><span class="field-value">' + esc(d.callee || '') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">归属地</span><span class="field-value">' + esc(d.calleeAttribute || '') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">主叫线路</span><span class="field-value">' + esc(d.caller || '') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">状态</span><span class="field-value"><span class="tag ' + (d.hangupReason === 'answered' ? 'answered' : d.hangupReason === 'no_answer' ? 'no_answer' : d.hangupReason === 'busy' ? 'busy' : 'failed') + '">' + esc(d.hangupReason || '') + '</span></span></div>';
+    html += '<div class="field-row"><span class="field-label">挂断方</span><span class="field-value">' + (d.hangupSide === 'caller' ? '主叫挂断' : d.hangupSide === 'callee' ? '被叫挂断' : esc(d.hangupSide || '-')) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">时长</span><span class="field-value">' + formatDuration(d.duration) + ' (计费 ' + formatDuration(d.billsec) + ')</span></div>';
+    html += '<div class="field-row"><span class="field-label">开始</span><span class="field-value">' + formatTime(d.startAt) + '</span></div>';
+    if (d.answerAt) html += '<div class="field-row"><span class="field-label">接通</span><span class="field-value">' + formatTime(d.answerAt) + '</span></div>';
+    if (d.endAt) html += '<div class="field-row"><span class="field-label">结束</span><span class="field-value">' + formatTime(d.endAt) + '</span></div>';
+    var taskName = (d.task && d.task.name) || '';
+    html += '<div class="field-row"><span class="field-label">任务</span><span class="field-value">' + esc(taskName) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">任务ID</span><span class="field-value">' + (d.taskId || '') + '</span></div>';
+    if (d.assistantVids && d.assistantVids.length > 0) {
+      html += '<div class="field-row"><span class="field-label">AI版本</span><span class="field-value">' + d.assistantVids.join(', ') + '</span></div>';
+    }
+    html += '</div></div>';
+
+    // === Section 2: Recording ===
+    var recordUrl = d.recordFile || d.rawRecordFile || '';
+    html += '<div class="detail-section"><h3>录音文件</h3>';
+    if (recordUrl) {
+      html += '<div style="font-size:13px;margin-bottom:8px">路径: <code style="background:#f5f5f5;padding:2px 6px;border-radius:3px;font-size:12px;word-break:break-all">' + esc(recordUrl) + '</code></div>';
+      html += '<button class="btn green small" onclick="downloadRecording(' + recordId + ')">下载录音 (WAV)</button>';
+      html += ' <span id="dlStatus_' + recordId + '" style="font-size:12px;color:var(--text2)"></span>';
+    } else {
+      html += '<div style="color:var(--text2);font-size:13px">无录音文件</div>';
+    }
+    html += '</div>';
+
+    // === Section 3: Collect Data ===
+    var collect = d.collect;
+    if (collect && collect.length > 0 && collect[0].items) {
+      var items = collect[0].items;
+      var hasData = false;
+      for (var i = 0; i < items.length; i++) { if (items[i].answer) { hasData = true; break; } }
+      if (hasData) {
+        html += '<div class="detail-section"><h3>AI 采集数据</h3><div class="collect-items">';
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].answer) {
+            html += '<div class="collect-item"><span class="q">' + esc(items[i].question) + '：</span><span class="a">' + esc(items[i].answer) + '</span></div>';
+          }
+        }
+        html += '</div></div>';
+      }
+    }
+
+    // === Section 4: AI Summary ===
+    if (summary.data) {
+      var s = summary.data;
+      var hasSummary = s.summary || s.suggestion;
+      if (hasSummary) {
+        html += '<div class="detail-section"><h3>AI 摘要</h3><div class="summary-box">';
+        if (s.summary) html += '<div>' + esc(s.summary) + '</div>';
+        if (s.suggestion) html += '<div style="margin-top:6px"><strong>建议：</strong>' + esc(s.suggestion) + '</div>';
+        html += '</div></div>';
+      }
+    }
+
+    // === Section 5: Transcript ===
+    if (transcript.success && transcript.data && transcript.data.length > 0) {
+      html += '<div class="detail-section"><h3>对话记录 (' + transcript.data.length + ' 条)</h3><div class="transcript-wrap">';
+      transcript.data.forEach(function(item) {
+        var cls = item.speaker === 'AI' ? 'ai' : item.speaker === '客户' ? 'client' : 'system';
+        html += '<div class="transcript-item ' + cls + '">';
+        html += '<span class="time">' + item.time + 's</span>';
+        html += '<div class="speaker">' + esc(item.speaker) + '</div>';
+        html += '<div>' + esc(item.content) + '</div>';
+        html += '</div>';
+      });
+      html += '</div></div>';
+    }
+
+    body.innerHTML = html || '<div class="empty-state">无法加载详情</div>';
+  } catch(e) {
+    body.innerHTML = '<div class="empty-state">加载失败: ' + e.message + '</div>';
+  }
+}
+
+async function downloadRecording(recordId) {
+  var statusEl = document.getElementById('dlStatus_' + recordId);
+  if (statusEl) statusEl.textContent = '下载中...';
+  try {
+    // Use fetch to trigger download - create a temporary link
+    var a = document.createElement('a');
+    a.href = '/api/calls/' + recordId + '/download';
+    a.download = 'call_' + recordId + '.wav';
+    a.click();
+    if (statusEl) statusEl.textContent = '已开始下载';
+  } catch(e) {
+    if (statusEl) statusEl.textContent = '下载失败: ' + e.message;
+  }
+}
+
+function closeDetailModal() { document.getElementById('detailModal').classList.remove('open'); }
+
+// ---------- Task Management ----------
+async function loadTaskList() {
+  if (!document.getElementById('tabTasks').classList.contains('active')) return;
+  var tbody = document.getElementById('tasksBody');
+  tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state">加载中...</div></td></tr>';
+  try {
+    var r = await fetch('/api/tasks/filter', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+    var d = await r.json();
+    if (d.success && d.data) {
+      allTasks = d.data.items || d.data.list || d.data || [];
+      renderTasks();
+    } else {
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state">暂无任务</div></td></tr>';
+    }
+  } catch(e) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state">加载失败: ' + e.message + '</div></td></tr>'; }
+}
+
+function renderTasks() {
+  var nameFilter = document.getElementById('taskSearchName').value.toLowerCase().trim();
+  var filtered = allTasks.filter(function(t) { if (nameFilter && !(t.name||'').toLowerCase().includes(nameFilter)) return false; return true; });
+  var tbody = document.getElementById('tasksBody');
+  if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state">暂无任务</div></td></tr>'; return; }
+  tbody.innerHTML = filtered.map(function(task) {
+    var statusLabel = task.status === 'completed' || task.status === 'done' ? '已完成'
+      : task.status === 'running' ? '进行中'
+      : task.status === 'pending' ? '待开始'
+      : task.status === 'paused' ? '已暂停'
+      : task.status || '--';
+    return '<tr><td>' + esc(task.name || '') + '</td><td>' + task.id + '</td>'
+      + '<td><span class="tag ' + ((task.status === 'completed' || task.status === 'done') ? 'answered' : task.status === 'running' ? 'no_answer' : 'pending') + '">' + statusLabel + '</span></td>'
+      + '<td>' + (task.total || 0) + '</td><td>' + formatTime(task.createTime || task.createdAt) + '</td>'
+      + '<td><button class="btn small" onclick="showTaskDetail(' + task.id + ')">详情</button></td></tr>';
+  }).join('');
+}
+
+async function showTaskDetail(taskId) {
+  var modal = document.getElementById('detailModal');
+  var body = document.getElementById('detailBody');
+  document.getElementById('detailTitle').textContent = '任务详情 #' + taskId;
+  modal.classList.add('open');
+  body.innerHTML = '<div class="empty-state">加载中...</div>';
+  try {
+    var [taskR, statR] = await Promise.all([
+      fetch('/api/task/' + taskId),
+      fetch('/api/task/' + taskId + '/statistics'),
+    ]);
+    var task = await taskR.json();
+    var stat = await statR.json();
+    var t = task.data || {};
+    var s = stat.data || {};
+    var html = '<div class="detail-section"><h3>任务信息</h3><div class="detail-grid">';
+    html += '<div class="field-row"><span class="field-label">名称</span><span class="field-value">' + esc(t.name || '') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">ID</span><span class="field-value">' + (t.id || '') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">状态</span><span class="field-value">' + esc(t.status || '') + '</span></div>';
+    html += '</div></div>';
+    html += '<div class="detail-section"><h3>统计数据</h3><div class="detail-grid">';
+    html += '<div class="field-row"><span class="field-label">号码总数</span><span class="field-value">' + (s.totalNum || 0) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">待呼叫</span><span class="field-value">' + (s.pendingNum || 0) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">呼叫中</span><span class="field-value">' + (s.callingNum || 0) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">已呼叫</span><span class="field-value">' + (s.calledNum || 0) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">已接通</span><span class="field-value" style="color:var(--green);font-weight:600">' + (s.calledAnsweredNum || 0) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">未接通</span><span class="field-value" style="color:var(--orange)">' + (s.calledUnAnsweredNum || 0) + '</span></div>';
+    html += '</div></div>';
+    body.innerHTML = html;
+  } catch(e) { body.innerHTML = '<div class="empty-state">加载失败: ' + e.message + '</div>'; }
+}
+
+// ---------- Create Task ----------
+async function createTask() {
+  var phone = document.getElementById('createPhone').value.trim();
+  var name = document.getElementById('createName').value.trim();
+  var vid = parseInt(document.getElementById('createVid').value) || 42558;
+  if (!phone) { document.getElementById('createResult').innerHTML = '<span style="color:var(--red)">请填写手机号</span>'; return; }
+  document.getElementById('createResult').innerHTML = '正在创建任务...';
+  try {
+    var r = await fetch('/api/task/create', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({phone:phone, name:name||undefined, assistantVid:vid}) });
+    var d = await r.json();
+    if (d.success) {
+      document.getElementById('createResult').innerHTML = '<span style="color:var(--green)">任务创建成功！ID: ' + d.data.id + ', 名称: ' + esc(d.data.name) + '</span>';
+      document.getElementById('createPhone').value = ''; document.getElementById('createName').value = '';
+      loadTaskList(); manualSync();
+    } else {
+      document.getElementById('createResult').innerHTML = '<span style="color:var(--red)">创建失败: ' + esc(d.error || '') + '</span>';
+    }
+  } catch(e) { document.getElementById('createResult').innerHTML = '<span style="color:var(--red)">网络错误: ' + e.message + '</span>'; }
+}
+
+// ---------- Log Modal ----------
+async function showLogModal() {
+  var modal = document.getElementById('logModal');
+  var body = document.getElementById('logBody');
+  modal.classList.add('open');
+  body.innerHTML = '<div class="empty-state">加载中...</div>';
+  try {
+    var r = await fetch('/api/updatelog');
+    var d = await r.json();
+    if (!d.success || !d.log || d.log.length === 0) { body.innerHTML = '<div class="empty-state">暂无同步记录</div>'; return; }
+    var html = '';
+    d.log.slice().reverse().forEach(function(entry) {
+      var time = formatTime(entry.time);
+      var summary = '共 ' + entry.total + ' 条';
+      if (entry.answered > 0) summary += ' | ' + entry.answered + ' 接通';
+      if (entry.noAnswer > 0) summary += ' | ' + entry.noAnswer + ' 未接';
+      if (entry.busy > 0) summary += ' | ' + entry.busy + ' 占线';
+      if (entry.failed > 0) summary += ' | ' + entry.failed + ' 失败';
+      if (entry.answered === 0 && entry.noAnswer === 0 && entry.busy === 0 && entry.failed === 0) summary += ' | 无变化';
+      html += '<div class="log-entry"><div class="log-time">' + time + '</div><div class="log-summary">' + summary + '</div></div>';
+    });
+    body.innerHTML = html;
+  } catch(e) { body.innerHTML = '<div class="empty-state">加载失败: ' + e.message + '</div>'; }
+}
+
+function closeLogModal() { document.getElementById('logModal').classList.remove('open'); }
+
+// Modal overlay close
+document.getElementById('detailModal').addEventListener('click', function(e) { if (e.target === this) closeDetailModal(); });
+document.getElementById('logModal').addEventListener('click', function(e) { if (e.target === this) closeLogModal(); });
+
+document.addEventListener('DOMContentLoaded', function() { init(); });
+</script>
+</body>
+</html>

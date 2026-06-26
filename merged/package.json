@@ -1,0 +1,12 @@
+{
+  "name": "wuji-voicefox-merge",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
+    "playwright": "^1.61.1",
+    "jsencrypt": "^3.5.4",
+    "node-forge": "^1.3.1"
+  }
+}

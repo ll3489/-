@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>无极CRM 线索同步</title>
+<style>
+  :root {
+    --primary: #1a73e8;
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --text: #1d1d1f;
+    --text2: #5f6368;
+    --green: #0d904f;
+    --red: #d93025;
+    --blue: #1a73e8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-left h1 { font-size: 18px; font-weight: 600; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  }
+  .badge.online { background: #e6f4ea; color: var(--green); }
+  .badge.offline { background: #fce8e6; color: var(--red); }
+  .badge .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .badge.online .dot { background: var(--green); }
+  .badge.offline .dot { background: var(--red); }
+  .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--card); cursor: pointer; font-size: 12px; font-weight: 500;
+    color: var(--text); transition: background .15s;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .btn:hover { background: #f5f5f5; }
+  .btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .btn.primary:hover { background: #1557b0; }
+  .btn.small { padding: 4px 10px; font-size: 12px; }
+  .record-btn.followed { background: #e6f4ea; color: #0d904f; border-color: #0d904f; }
+  .record-btn.unfollowed { background: #fef7e0; color: #e37400; border-color: #e37400; }
+  .record-btn.followed { background: #e6f4ea; color: #0d904f; border-color: #0d904f; }
+  .record-btn.unfollowed { background: #fef7e0; color: #e37400; border-color: #e37400; }
+  .btn:disabled { opacity: .5; }
+
+  .sync-bar {
+    padding: 8px 24px; background: var(--card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text2);
+    flex-wrap: wrap;
+  }
+  .sync-bar .stat { cursor: pointer; }
+  .sync-bar .stat:hover { color: var(--primary); }
+  .new { color: var(--green); font-weight: 600; }
+  .updated { color: var(--blue); font-weight: 600; }
+  .same { color: var(--text2); }
+  .total { color: var(--text); font-weight: 600; }
+
+  .settings-bar {
+    padding: 8px 24px; background: var(--card); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px;
+  }
+  .settings-bar input {
+    padding: 6px 10px; border: 1px solid var(--border); border-radius: 5px;
+    font-size: 13px; outline: none; max-width: 100px;
+  }
+  .settings-bar input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,115,232,.12); }
+  .settings-bar select {
+    padding: 4px 6px; border: 1px solid var(--border); border-radius: 4px;
+    font-size: 13px; background: var(--card);
+  }
+
+  .table-wrap { padding: 0 24px 16px; overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse; background: var(--card);
+    border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    font-size: 13px;
+  }
+  thead th {
+    background: #f8f9fa; padding: 9px 10px; text-align: left; font-weight: 600;
+    color: var(--text2); border-bottom: 2px solid var(--border);
+    white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  thead th:hover { background: #f0f1f3; }
+  thead th .sort { margin-left: 3px; opacity: .3; }
+  thead th.sorted .sort { opacity: 1; color: var(--primary); }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f8f9ff; }
+  tbody td {
+    padding: 7px 10px; white-space: nowrap; max-width: 160px;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  tbody td .tag {
+    display: inline-block; padding: 1px 7px; border-radius: 10px;
+    font-size: 11px; font-weight: 500; background: #e8f0fe; color: var(--primary);
+  }
+  tbody td .tag.new { background: #e6f4ea; color: var(--green); }
+  tbody td .tag.pool { background: #fef7e0; color: #e37400; }
+
+  .pagination {
+    padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .pagination .count { font-size: 13px; color: var(--text2); }
+  .pagination .pages { display: flex; gap: 3px; align-items: center; }
+  .pagination .pages .page-btn {
+    padding: 4px 9px; border: 1px solid var(--border); border-radius: 4px;
+    background: var(--card); cursor: pointer; font-size: 12px; min-width: 30px; text-align: center;
+  }
+  .pagination .pages .page-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .pagination .pages .page-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text2); }
+
+  /* Modal */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.4); z-index: 1000; align-items: flex-start;
+    justify-content: center; padding: 40px 20px; overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border-radius: 10px; max-width: 800px; width: 100%;
+    box-shadow: 0 8px 30px rgba(0,0,0,.15); overflow: hidden;
+  }
+  .modal-header {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 15px; font-weight: 600;
+  }
+  .modal-header .close-btn {
+    cursor: pointer; font-size: 20px; color: var(--text2); background: none; border: none;
+  }
+  .modal-header .close-btn:hover { color: var(--text); }
+  .modal-body { padding: 16px 20px; max-height: 60vh; overflow-y: auto; }
+  .modal-body .log-entry {
+    padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .modal-body .log-entry:last-child { border-bottom: none; }
+  .modal-body .log-entry .log-time { color: var(--text2); font-size: 12px; margin-bottom: 4px; }
+  .modal-body .log-entry .log-summary { margin-bottom: 4px; }
+  .modal-body .log-entry .log-details { padding-left: 16px; font-size: 12px; color: var(--text2); }
+  .modal-body .log-entry .log-details .detail-item { margin: 3px 0; }
+  .modal-body .log-entry .log-details .detail-item .field-name { color: var(--primary); }
+  .modal-body .log-entry .log-details .detail-item .old-val { color: var(--red); text-decoration: line-through; }
+  .modal-body .log-entry .log-details .detail-item .new-val { color: var(--green); }
+  .modal-empty { text-align: center; padding: 30px; color: var(--text2); font-size: 13px; }
+
+  @media (max-width: 768px) {
+    .header { padding: 10px 12px; }
+    .header-left h1 { font-size: 15px; }
+    .sync-bar, .settings-bar { padding: 6px 12px; }
+    .table-wrap { padding: 0 6px 6px; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 5px 6px; }
+    .modal { max-width: 100%; margin: 10px; }
+  }
+.record-item{padding:12px 0;border-bottom:1px solid var(--border)}.record-item:last-child{border-bottom:none}.record-item .record-header{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;color:var(--text2)}.record-item .record-content{font-size:14px;margin:4px 0;color:var(--text)}.record-item .record-meta{font-size:12px;color:var(--text2);display:flex;gap:12px}.record-item .record-type{display:inline-block;padding:1px 6px;border-radius:8px;font-size:11px;background:#e8f0fe;color:var(--primary)}</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>无极CRM 线索同步</h1>
+    <span class="badge offline" id="statusBadge">
+      <span class="dot"></span> <span id="statusText">未连接</span>
+    </span>
+  </div>
+  <div class="header-right">
+    <button class="btn primary small" onclick="manualSync()" id="syncBtn">立即同步</button>
+    <button class="btn small" onclick="exportCSV()">导出CSV</button>
+    <button class="btn small" onclick="showUpdateLog()" id="logBtn">更新日志</button>
+  </div>
+</div>
+
+<div class="sync-bar">
+  <span class="stat" onclick="showUpdateLog()" id="syncInfo">--</span>
+  <span class="info" id="errorDisplay" style="display:none"></span>
+</div>
+
+<div class="settings-bar">
+  <label>自动同步</label>
+  <select id="intervalSelect" onchange="changeInterval()">
+    <option value="5000">5 秒</option>
+    <option value="10000">10 秒</option>
+    <option value="15000" selected>15 秒</option>
+    <option value="30000">30 秒</option>
+    <option value="60000">1 分钟</option>
+    <option value="120000">2 分钟</option>
+    <option value="300000">5 分钟</option>
+    <option value="600000">10 分钟</option>
+  </select>
+  <label>搜索</label>
+  <input type="text" id="searchInput" placeholder="姓名 / 手机号" oninput="filterTable()">
+  <input type="text" id="ownerFilter" placeholder="负责人" oninput="filterTable()">
+  <select id="sourceFilter" onchange="filterTable()"><option value="">全部来源</option></select>
+  <select id="statusFilter" onchange="filterTable()">
+    <option value="">全部状态</option>
+    <option value="1">正常</option>
+    <option value="2">已转化</option>
+    <option value="3">已关闭</option>
+  </select>
+</div>
+
+<div class="table-wrap">
+  <table><thead><tr id="tableHead"></tr></thead><tbody id="tableBody"></tbody></table>
+</div>
+<div class="pagination">
+  <span class="count" id="paginationCount">显示 0 条</span>
+  <div class="pages" id="pagination"></div>
+</div>
+
+<!-- Update Log Modal -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span>更新日志</span>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="logBody">
+      <div class="modal-empty">加载中...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var allLeads = [], filteredLeads = [];
+var sortField = 'createTime', sortDir = -1, currentPage = 1, PAGE_SIZE = 20, polling = false;
+
+var fieldLabels = {
+  leadsName:'线索名称', mobile:'手机号', telephone:'电话', ownerUserName:'负责人',
+  ownerDeptName:'部门', source:'来源', assignedPool:'线索池', status:'状态', level:'等级',
+  fieldGjmfug:'类别', fieldXzhmxa:'渠道', fieldJbdcox:'获客方式', fieldKqjpds:'线索金额',
+  lastContent:'最后内容', updateTime:'更新时间', createTime:'创建时间', remark:'备注',
+  address:'地址', email:'邮箱'
+};
+
+var COLUMNS = [
+  { key:'leadsName', label:'线索名称', sortable:true },
+  { key:'mobile', label:'手机号', sortable:true },
+  { key:'telephone', label:'电话', sortable:true },
+  { key:'ownerUserName', label:'负责人', sortable:true },
+  { key:'ownerDeptName', label:'部门', sortable:true },
+  { key:'source', label:'来源', sortable:true },
+  { key:'assignedPool', label:'线索池', sortable:true },
+  { key:'fieldGjmfug', label:'类别', sortable:true },
+  { key:'fieldXzhmxa', label:'渠道', sortable:true },
+  { key:'fieldJbdcox', label:'获客方式', sortable:true },
+  { key:'fieldKqjpds', label:'线索金额', sortable:true },
+  { key:'createUserName', label:'创建人', sortable:true },
+  { key:'createTime', label:'创建时间', sortable:true },
+  { key:'updateTime', label:'更新时间', sortable:true },
+  { key:'status', label:'状态', sortable:true },
+  { key:'level', label:'等级', sortable:false },
+  { key:'address', label:'地址', sortable:false },
+  { key:'email', label:'邮箱', sortable:false },
+  { key:'remark', label:'备注', sortable:false },
+];
+
+function loadCachedData(){try{var c=localStorage.getItem("crmLeads");if(c){var d=JSON.parse(c);if(d&&d.list&&d.list.length>0){allLeads=d.list;updateSourcesFilter();filterTable();var t=d.time?new Date(d.time).toLocaleString():"";document.getElementById("syncInfo").innerHTML=(t?t+" - ":"")+"缓存数据 "+d.list.length+" 条"}}}catch(e){}}
+async function submitRecord(){
+  var leadsId=document.getElementById("recordLeadName").dataset.leadsid;
+  var content=document.getElementById("recordInput").value.trim();
+  if(!content||!leadsId){return}
+  var btn=document.querySelector("#recordModal .btn.primary");btn.disabled=true;btn.textContent="提交中...";
+  try{
+    var r=await fetch("/api/record/add",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({leadsId:leadsId,content:content})});
+    var d=await r.json();
+    if(d.success){
+      document.getElementById("recordInput").value="";
+      openRecord(leadsId,document.getElementById("recordLeadName").textContent);
+    }else{alert("提交失败: "+(d.error||"未知错误"))}
+  }catch(e){alert("网络错误")}
+  btn.disabled=false;btn.textContent="提交跟进";
+}
+function init() { renderHeaders(); loadCachedData(); fetchStatus(); startPolling(); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderHeaders() {
+  var h = '<th style="width:34px">#</th><th style="width:55px">跟进</th>';
+  COLUMNS.forEach(function(c) {
+    var s = sortField === c.key;
+    h += '<th class="' + (s?'sorted':'') + '" onclick="' + (c.sortable ? "sortBy('" + c.key + "')" : '') + '" style="' + (c.sortable ? '' : 'cursor:default') + '">'
+      + c.label + (c.sortable ? '<span class="sort">' + (s ? (sortDir > 0 ? '\u25B2' : '\u25BC') : '\u21C5') + '</span>' : '') + '</th>';
+  });
+  document.getElementById('tableHead').innerHTML = h;
+}
+
+function renderBody(leads) {
+  var tbody = document.getElementById('tableBody');
+  if (!leads || leads.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="' + (COLUMNS.length+1) + '"><div class="empty-state"><p>暂无线索数据</p></div></td></tr>';
+    return;
+  }
+  var start = (currentPage - 1) * PAGE_SIZE;
+  var pageLeads = leads.slice(start, start + PAGE_SIZE);
+  tbody.innerHTML = pageLeads.map(function(lead, i) {
+    var idx = start + i + 1;
+    var sh = lead.status === 1 ? '<span class="tag">正常</span>'
+      : lead.status === 2 ? '<span class="tag new">已转化</span>'
+      : lead.status === 3 ? '<span class="tag pool">已关闭</span>'
+      : '<span class="tag">' + lead.status + '</span>';
+    return '<tr data-id="' + lead.leadsId + '" data-name="' + esc(lead.leadsName || '') + '"><td style="color:var(--text2);font-size:12px">' + idx + '</td><td style="text-align:center">' + (lead.lastContent || lead.lastCallTime ? '<button class="btn small record-btn followed">已跟进</button>' : '<button class="btn small record-btn unfollowed">未跟进</button>') + '</td>'
+      + COLUMNS.map(function(c) {
+        var v = lead[c.key];
+        if (v === undefined || v === null) v = '';
+        if (c.key === 'status') return '<td>' + sh + '</td>';
+        if (v === '' || v === 0) return '<td style="color:#ccc">-</td>';
+        if (c.key === 'mobile' || c.key === 'telephone') return '<td><a href="tel:' + v + '" style="color:var(--primary);text-decoration:none">' + esc(v) + '</a></td>';
+        return '<td title="' + esc(v) + '">' + esc(v) + '</td>';
+      }).join('') + '</tr>';
+  }).join('');
+  updatePagination(leads.length);
+}
+
+function updatePagination(total) {
+  document.getElementById('paginationCount').textContent = '显示 ' + Math.min(PAGE_SIZE, filteredLeads.length) + ' 条，共 ' + total + ' 条';
+  var tp = Math.ceil(total / PAGE_SIZE) || 1;
+  var h = '<button class="page-btn" onclick="goPage(1)" ' + (currentPage <= 1 ? 'disabled' : '') + '>|&lt;</button>';
+  h += '<button class="page-btn" onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>&lt;</button>';
+  var sp = Math.max(1, currentPage - 2), ep = Math.min(tp, currentPage + 2);
+  if (ep - sp < 4) { if (sp === 1) ep = Math.min(tp, sp + 4); else sp = Math.max(1, ep - 4); }
+  for (var p = sp; p <= ep; p++) h += '<button class="page-btn' + (p === currentPage ? ' active' : '') + '" onclick="goPage(' + p + ')">' + p + '</button>';
+  h += '<button class="page-btn" onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= tp ? 'disabled' : '') + '>&gt;</button>';
+  h += '<button class="page-btn" onclick="goPage(' + tp + ')" ' + (currentPage >= tp ? 'disabled' : '') + '>&gt;|</button>';
+  document.getElementById('pagination').innerHTML = h;
+}
+
+function sortBy(field) {
+  if (sortField === field) sortDir = -sortDir;
+  else { sortField = field; sortDir = -1; }
+  renderHeaders(); sortData(); renderBody(filteredLeads);
+}
+function sortData() {
+  filteredLeads.sort(function(a, b) {
+    var va = a[sortField] || '', vb = b[sortField] || '';
+    if (sortField === 'createTime' || sortField === 'updateTime') return sortDir * (new Date(va) - new Date(vb));
+    if (sortField === 'fieldKqjpds') return sortDir * ((parseFloat(va)||0) - (parseFloat(vb)||0));
+    return sortDir * String(va).localeCompare(String(vb), 'zh-CN');
+  });
+}
+function filterTable() {
+  var search = document.getElementById('searchInput').value.toLowerCase().trim();
+  var owner = document.getElementById('ownerFilter').value.toLowerCase().trim();
+  var source = document.getElementById('sourceFilter').value;
+  var status = document.getElementById('statusFilter').value;
+  filteredLeads = allLeads.filter(function(l) {
+    if (search && !(l.leadsName||'').toLowerCase().includes(search) && !(l.mobile||'').includes(search) && !(l.telephone||'').includes(search)) return false;
+    if (owner && !(l.ownerUserName||'').toLowerCase().includes(owner)) return false;
+    if (source && (l.source||'') !== source) return false;
+    if (status && String(l.status||'') !== status) return false;
+    return true;
+  });
+  currentPage = 1; sortData(); renderBody(filteredLeads);
+}
+
+function showSyncInfo(info, time) {
+  var el = document.getElementById('syncInfo');
+  if (!time) { el.textContent = '--'; return; }
+  var t = new Date(time).toLocaleString();
+  if (!info) { el.innerHTML = t + ' - 同步完成'; return; }
+  var parts = [];
+  if (info.added > 0) parts.push('<span class="new">+' + info.added + ' 新增</span>');
+  if (info.updated > 0) parts.push('<span class="updated">~' + info.updated + ' 更新</span>');
+  if (info.added === 0 && info.updated === 0) parts.push('<span class="same">无更新</span>');
+  el.innerHTML = t + ' - 共 <span class="total">' + info.total + '</span> 条 ' + parts.join(' ');
+}
+
+function showError(msg) {
+  var el = document.getElementById('errorDisplay');
+  if (msg) { el.style.display = 'inline'; el.textContent = msg; }
+  else el.style.display = 'none';
+}
+
+async function fetchStatus() {
+  try {
+    var r = await fetch('/api/status');
+    var d = await r.json();
+    var badge = document.getElementById('statusBadge');
+    var st = document.getElementById('statusText');
+    if (d.loggedIn) { badge.className = 'badge online'; st.textContent = '已登录'; }
+    else { badge.className = 'badge offline'; st.textContent = d.loginError || '未登录'; }
+    if (d.lastSyncInfo) showSyncInfo(d.lastSyncInfo.info, d.lastSyncInfo.time);
+    if (d.fetchError) showError(d.fetchError); else showError(null);
+    if (d.pollIntervalMs) {
+      var sel = document.getElementById('intervalSelect');
+      for (var i = 0; i < sel.options.length; i++)
+        if (parseInt(sel.options[i].value) === d.pollIntervalMs) { sel.value = d.pollIntervalMs; break; }
+    }
+  } catch(e) {}
+}
+
+async function changeInterval() {
+  var ms = parseInt(document.getElementById('intervalSelect').value);
+  try {
+    var r = await fetch('/api/settings', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pollIntervalMs:ms}) });
+    var d = await r.json();
+    if (d.success) document.getElementById('syncInfo').innerHTML = new Date().toLocaleString() + ' - 间隔已设为 ' + (ms/1000) + ' 秒';
+  } catch(e) {}
+}
+
+async function manualSync() {
+  var btn = document.getElementById('syncBtn');
+  btn.disabled = true; btn.textContent = '同步中...';
+  document.getElementById('syncInfo').textContent = new Date().toLocaleString() + ' - 正在同步...';
+  try {
+    var r = await fetch('/api/leads?all=true');
+    var d = await r.json();
+    if (d.success && d.data) { allLeads = d.data.list || []; try{localStorage.setItem("crmLeads",JSON.stringify({list:allLeads,time:new Date().toISOString()}))}catch(e){} updateSourcesFilter(); filterTable(); }
+    if (d.syncInfo) showSyncInfo(d.syncInfo.info, d.syncInfo.time);
+    if (d.error) showError(d.error); else showError(null);
+  } catch(e) { showError(e.message); }
+  btn.disabled = false; btn.textContent = '立即同步';
+}
+
+function updateSourcesFilter() {
+  var s = new Set();
+  allLeads.forEach(function(l) { if (l.source) s.add(l.source); });
+  var sel = document.getElementById('sourceFilter');
+  var cv = sel.value;
+  sel.innerHTML = '<option value="">全部来源</option>';
+  Array.from(s).sort().forEach(function(v) { sel.innerHTML += '<option value="' + esc(v) + '">' + esc(v) + '</option>'; });
+  sel.value = cv;
+}
+
+function goPage(p) { currentPage = p; renderBody(filteredLeads); }
+
+function startPolling() {
+  if (polling) return; polling = true;
+  async function poll() {
+    try {
+      var r = await fetch('/api/leads?all=true&_t=' + Date.now());
+      var d = await r.json();
+      if (d.success && d.data) { allLeads = d.data.list || []; try{localStorage.setItem("crmLeads",JSON.stringify({list:allLeads,time:new Date().toISOString()}))}catch(e){} updateSourcesFilter(); filterTable(); }
+      if (d.syncInfo) showSyncInfo(d.syncInfo.info, d.syncInfo.time);
+      if (d.error) showError(d.error); else showError(null);
+      if (d.pollIntervalMs) {
+        var sel = document.getElementById('intervalSelect');
+        for (var i = 0; i < sel.options.length; i++)
+          if (parseInt(sel.options[i].value) === d.pollIntervalMs) { sel.value = d.pollIntervalMs; break; }
+      }
+    } catch(e) {}
+    setTimeout(poll, 15000);
+  }
+  poll();
+}
+
+// Update log modal
+async function showUpdateLog() {
+  var modal = document.getElementById('logModal');
+  var body = document.getElementById('logBody');
+  modal.classList.add('open');
+  body.innerHTML = '<div class="modal-empty">加载中...</div>';
+  try {
+    var r = await fetch('/api/updatelog');
+    var d = await r.json();
+    if (!d.success || !d.log || d.log.length === 0) {
+      body.innerHTML = '<div class="modal-empty">暂无更新记录</div>';
+      return;
+    }
+    var html = '';
+    // Show newest first (reverse order)
+    d.log.slice().reverse().forEach(function(entry) {
+      var time = new Date(entry.time).toLocaleString();
+      var summary = '共 ' + entry.total + ' 条';
+      if (entry.added > 0) summary += ' | +' + entry.added + ' 新增';
+      if (entry.updated > 0) summary += ' | ~' + entry.updated + ' 更新';
+      if (entry.added === 0 && entry.updated === 0) summary += ' | 无更新';
+      html += '<div class="log-entry">';
+      html += '<div class="log-time">' + time + '</div>';
+      html += '<div class="log-summary">' + summary + '</div>';
+      if (entry.details && entry.details.length > 0) {
+        html += '<div class="log-details">';
+        entry.details.forEach(function(det) {
+          if (det.leadsName) {
+            html += '<div class="detail-item"><strong>' + esc(det.leadsName) + '</strong>';
+            det.changed.forEach(function(c) {
+              var label = fieldLabels[c.field] || c.field;
+              html += '<br><span class="field-name">' + label + '</span>: ';
+              if (c.field === '(新线索)') {
+                html += '<span class="new-val">' + esc(c.new) + '</span> (新线索)';
+              } else {
+                if (c.old) html += '<span class="old-val">' + esc(c.old) + '</span> \u2192 ';
+                html += '<span class="new-val">' + esc(c.new) + '</span>';
+              }
+            });
+            html += '</div>';
+          }
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+    });
+    body.innerHTML = html;
+  } catch(e) {
+    body.innerHTML = '<div class="modal-empty">加载失败: ' + e.message + '</div>';
+  }
+}
+
+async function openRecord(leadsId,leadsName){var modal=document.getElementById("recordModal");var body=document.getElementById("recordBody");document.getElementById("recordLeadName").textContent=leadsName;document.getElementById("recordLeadName").dataset.leadsid=leadsId;modal.classList.add("open");body.innerHTML="<div class=\"modal-empty\">加载中...</div>";try{var r=await fetch("/api/record/"+leadsId);var d=await r.json();var list=d.activityRecords&&d.activityRecords.data?d.activityRecords.data.list:[];if(list.length===0){body.innerHTML="<div class=\"modal-empty\">暂无跟进记录</div>";return}var typeLabels={1:"跟进",2:"电话",3:"会议",4:"邮件",5:"短信"};var h="";list.forEach(function(item){var tl=typeLabels[item.type]||("类型"+item.type);var cr=item.createUser?item.createUser.realname:"未知";var tm=item.createTime||"";var ct=item.content||"";h+="<div class=\"record-item\"><div class=\"record-header\"><span class=\"record-type\">"+tl+"</span><span>"+tm+"</span></div><div class=\"record-content\">"+esc(ct)+"</div><div class=\"record-meta\"><span>"+esc(cr)+"</span></div></div>"});body.innerHTML=h}catch(e){body.innerHTML="<div class=\"modal-empty\">加载失败</div>"}}
+function closeRecordModal(){document.getElementById("recordModal").classList.remove("open")}
+function closeModal() {
+  document.getElementById('logModal').classList.remove('open');
+}
+// Close modal on overlay click
+var logEl=document.getElementById('logModal');if(logEl)logEl.addEventListener('click',function(e){
+  if (e.target === this) closeModal();
+});
+var recEl=document.getElementById('recordModal');if(recEl)recEl.addEventListener('click',function(e){
+  if (e.target === this) closeModal();
+});
+
+function exportCSV() {
+  var leads = filteredLeads.length > 0 ? filteredLeads : allLeads;
+  if (leads.length === 0) { alert('没有数据可导出'); return; }
+  var hdrs = ['线索名称','手机号','电话','负责人','部门','来源','线索池','类别','渠道','获客方式','线索金额','创建人','创建时间','更新时间','状态','等级','地址','邮箱','备注'];
+  var rows = leads.map(function(l) {
+    return [l.leadsName, l.mobile, l.telephone, l.ownerUserName, l.ownerDeptName, l.source, l.assignedPool, l.fieldGjmfug, l.fieldXzhmxa, l.fieldJbdcox, l.fieldKqjpds, l.createUserName, l.createTime, l.updateTime,
+      l.status === 1 ? '正常' : l.status === 2 ? '已转化' : '已关闭', l.level, l.address, l.email, l.remark
+    ].map(function(v) { return '"' + (v||'').replace(/"/g, '""') + '"'; }).join(',');
+  });
+  var csv = '\ufeff' + hdrs.join(',') + '\n' + rows.join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = '无极CRM线索_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+document.addEventListener('DOMContentLoaded',function(){init();});
+// Event delegation for follow-up buttons
+try{var tbEl=document.getElementById("tableBody");if(tbEl){tbEl.addEventListener("click",function(e){var btn=e.target.closest(".record-btn");if(btn){var row=btn.closest("tr");if(row&&row.dataset.id){openRecord(row.dataset.id,row.dataset.name);}}});}}catch(e){}
+</script>
+<div class="modal-overlay" id="recordModal"><div class="modal"><div class="modal-header"><span>跟进记录 - <span id="recordLeadName"></span></span><button class="close-btn" onclick="closeRecordModal()">&times;</button></div><div class="modal-body" id="recordBody"><div class="modal-empty">加载中...</div></div><div style="padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px"><input type="text" id="recordInput" placeholder="输入跟进内容..." style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;outline:none" onkeydown="if(event.key==="Enter")submitRecord()"><button class="btn primary small" onclick="submitRecord()">提交跟进</button></div></div></div></body>
+</html>

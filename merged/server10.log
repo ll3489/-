@@ -1,0 +1,426 @@
+[无极CRM] 从磁盘恢复 2676 条线索, 100 条日志
+[声狐] 从磁盘恢复 50 条通话, 100 条日志
+[Pipeline] 从磁盘恢复队列 7 条, 活跃任务: 无
+
+============================================
+  无极CRM x VoiceFox 声狐 融合管理平台
+  http://localhost:3456
+============================================
+
+[无极CRM] 登录尝试 1
+[声狐] 登录尝试 1
+[声狐] 登录成功 - 项目: 981, 用户: 李灵
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[无极CRM] 登录成功
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2676
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2676
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2676
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2676
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2676
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2676, unfollowed 7
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +1 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~1 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2677
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2677, unfollowed 8
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +1 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~1 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2678
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2678, unfollowed 9
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +1 ~0 =2679
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~1 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2679
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2679, unfollowed 10
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +1 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~1 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[声狐] 同步完成: 92 通, 9 接通
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[Pipeline] onWujiSync: total leads 2680, unfollowed 11
+[无极CRM] 同步完成: +0 ~0 =2680
+[声狐] 同步完成: 92 通, 9 接通

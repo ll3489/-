@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+﻿const fetch = require('node-fetch');
 const { chromium } = require('playwright');
 const querystring = require('querystring');
 const { save, load } = require('./persist');
@@ -200,6 +200,7 @@ class WujiCRM {
       if (this.updateLog.length > MAX_LOG) this.updateLog = this.updateLog.slice(this.updateLog.length - MAX_LOG);
       this.fetchError = null;
       this._saveToDisk();
+      if (this.onSync) this.onSync(r.info, r.details);
       console.log('[无极CRM] 同步完成: +' + r.info.added + ' ~' + r.info.updated + ' =' + r.info.total);
       return r.info;
     } catch (err) { this.fetchError = err.message; return null; }
@@ -245,7 +246,6 @@ class WujiCRM {
     if (this.pollTimer) clearInterval(this.pollTimer);
     this.pollTimer = setInterval(async () => {
       const info = await this.doSync();
-      if (info && this.onSync) this.onSync(info);
     }, this.pollIntervalMs);
   }
 
@@ -284,3 +284,4 @@ class WujiCRM {
 }
 
 module.exports = { WujiCRM, FIELD_LABELS };
+

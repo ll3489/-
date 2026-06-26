@@ -419,30 +419,68 @@
 <div class="tab-content" id="tabPipeline">
   <div class="toolbar">
     <label>联动状态:</label>
-    <span id="pipelineToggleLabel" style="font-weight:600;color:var(--green)">运行中</span>
-    <button class="btn small" id="pipelineToggleBtn" onclick="togglePipeline()">暂停</button>
-    <button class="btn small" onclick="runBatchMatch()">批量匹配</button>
-    <span id="batchMatchResult" style="font-size:12px;color:var(--text2)"></span>
+    <span id="pipelineToggleLabel" style="font-weight:600;color:var(--green)">已停止</span>
+    <button class="btn small" id="pipelineToggleBtn" onclick="togglePipeline()">开始拨打</button>
+    <button class="btn small" onclick="refreshPipeline()">刷新</button>
+    <span id="activeCallInfo" style="font-size:12px;color:var(--blue);margin-left:8px"></span>
+    <label style="margin-left:12px">来源筛选:</label>
+    <select id="sourceFilter" onchange="changeSourceFilter()">
+      <option value="all">全部来源</option>
+      <option value="manual">仅人工手动</option>
+      <option value="system">仅系统接入</option>
+    </select>
   </div>
+
   <div class="pipeline-summary" id="pipelineSummary">
-    <div class="ps-card"><div class="ps-val" id="pipeMatched">0</div><div class="ps-label">匹配线索</div></div>
-    <div class="ps-card"><div class="ps-val green" id="pipeWritten">0</div><div class="ps-label">已写入跟进</div></div>
-    <div class="ps-card"><div class="ps-val red" id="pipeFailed">0</div><div class="ps-label">写入失败</div></div>
+    <div class="ps-card"><div class="ps-val" id="pipePending">0</div><div class="ps-label">待拨打</div></div>
+    <div class="ps-card"><div class="ps-val blue" id="pipeCalling">0</div><div class="ps-label">拨打中</div></div>
+    <div class="ps-card"><div class="ps-val green" id="pipeCompleted">0</div><div class="ps-label">已接通</div></div>
+    <div class="ps-card"><div class="ps-val red" id="pipeUnreachable">0</div><div class="ps-label">无法打通</div></div>
+    <div class="ps-card"><div class="ps-val" id="pipeTotal">0</div><div class="ps-label">累计入队</div></div>
   </div>
+
   <div class="status-bar" style="border-top:1px solid var(--border)">
-    <span>联动规则: VoiceFox 外呼接通 → 自动在无极CRM对应线索写入AI摘要跟进</span>
+    <span>出站规则: 无极CRM新线索自动入队按时间倒序拨打，未接通移至队尾，2次未接通写入CRM</span>
   </div>
-  <div id="pipelineLog" style="padding:8px 20px">
-    <div class="empty-state">暂无联动记录</div>
+
+  <div id="pipelineQueueSection" style="padding:8px 20px">
+    <div style="font-size:12px;font-weight:600;margin-bottom:6px">外呼队列</div>
+    <table id="queueTable" style="font-size:12px">
+      <thead><tr>
+        <th style="width:30px">#</th>
+        <th>线索名称</th>
+        <th>手机号</th>
+        <th>来源</th>
+        <th>创建时间</th>
+        <th>状态</th>
+        <th>拨打次数</th>
+        <th>操作</th>
+      </tr></thead>
+      <tbody id="queueBody"><tr><td colspan="8"><div class="empty-state">暂无队列数据</div></td></tr></tbody>
+    </table>
   </div>
-</div>
 
-<!-- ============================================================ -->
-<!-- Modals -->
-<!-- ============================================================ -->
+  <div style="padding:8px 20px;border-top:1px solid var(--border)">
+    <div style="font-size:12px;font-weight:600;margin-bottom:6px">待确认区域 <span id="holdCount" style="font-weight:400;color:var(--text2)">(0 条)</span></div>
+    <table id="holdTable" style="font-size:12px">
+      <thead><tr>
+        <th style="width:30px">#</th>
+        <th>线索名称</th>
+        <th>手机号</th>
+        <th>来源</th>
+        <th>创建时间</th>
+        <th>移入时间</th>
+        <th>操作</th>
+      </tr></thead>
+      <tbody id="holdBody"><tr><td colspan="7"><div class="empty-state">暂无待确认线索</div></td></tr></tbody>
+    </table>
+  </div>
 
-<!-- Call Detail Modal -->
-<div class="modal-overlay" id="detailModal">
+  <div style="padding:8px 20px;border-top:1px solid var(--border)">
+    <div style="font-size:12px;font-weight:600;margin-bottom:6px">联动日志</div>
+    <div id="pipelineLog" style="max-height:300px;overflow-y:auto"></div>
+  </div>
+</div><div class="modal-overlay" id="detailModal">
   <div class="modal">
     <div class="modal-header">
       <span id="detailTitle">详情</span>
@@ -1164,29 +1202,97 @@ async function showCallLog() {
 // ===================================================================
 function updatePipelineUI(p) {
   if (!p) return;
-  document.getElementById('pipeMatched').textContent = p.stats ? p.stats.totalMatched : 0;
-  document.getElementById('pipeWritten').textContent = p.stats ? p.stats.totalWritten : 0;
-  document.getElementById('pipeFailed').textContent = p.stats ? p.stats.totalFailed : 0;
+  document.getElementById('pipePending').textContent = p.queue ? p.queue.pending : 0;
+  document.getElementById('pipeCalling').textContent = p.queue ? p.queue.calling : 0;
+  document.getElementById('pipeCompleted').textContent = p.queue ? p.queue.completed : 0;
+  document.getElementById('pipeUnreachable').textContent = p.queue ? p.queue.failed : 0;
+  document.getElementById('pipeTotal').textContent = p.stats ? p.stats.totalEnqueued : 0;
+
   var label = document.getElementById('pipelineToggleLabel');
   var btn = document.getElementById('pipelineToggleBtn');
   if (p.enabled) {
-    label.textContent = '运行中'; label.style.color = 'var(--green)';
-    btn.textContent = '暂停'; btn.className = 'btn small';
+    label.textContent = '\u6b63\u5728\u62e8\u6253'; label.style.color = 'var(--green)';
+    btn.textContent = '\u6682\u505c'; btn.className = 'btn small';
   } else {
-    label.textContent = '已暂停'; label.style.color = 'var(--orange)';
-    btn.textContent = '启动'; btn.className = 'btn small green';
+    label.textContent = '\u5df2\u505c\u6b62'; label.style.color = 'var(--text2)';
+    btn.textContent = '\u5f00\u59cb\u62e8\u6253'; btn.className = 'btn small green';
   }
-  // Render log
+
+  // Active call
+  var activeEl = document.getElementById('activeCallInfo');
+  if (p.activeCall) {
+    activeEl.textContent = '\u6b63\u5728\u62e8\u6253: ' + p.activeCall.phone;
+  } else {
+    activeEl.textContent = '';
+  }
+
+  // Source filter
+  var sf = document.getElementById('sourceFilter');
+  if (sf && p.sourceFilter) sf.value = p.sourceFilter;
+
+  // Queue table
+  var tbody = document.getElementById('queueBody');
+  if (p.queue && p.queue.items && p.queue.items.length > 0) {
+    var h = '';
+    p.queue.items.forEach(function(item, i) {
+      if (item.status === 'completed' || item.status === 'failed') return; // skip history items in table
+      var statusLabel, statusCls;
+      switch (item.status) {
+        case 'pending': statusLabel = '\u5f85\u62e8\u6253'; statusCls = 'pending'; break;
+        case 'calling': statusLabel = '\u62e8\u6253\u4e2d'; statusCls = 'no_answer'; break;
+        default: statusLabel = item.status; statusCls = 'pending';
+      }
+      var sourceLabel = item.source || '--';
+      var holdBtn = item.status === 'pending' ? '<button class="btn small" onclick="moveToHold(\'' + item.leadsId + '\')">\u79fb\u5165\u5f85\u786e\u8ba4</button>' : '';
+      h += '<tr><td>' + (i + 1) + '</td>'
+        + '<td>' + esc(item.leadsName) + '</td>'
+        + '<td>' + esc(item.phone) + '</td>'
+        + '<td>' + sourceLabel + '</td>'
+        + '<td>' + fmtTime(item.createTime) + '</td>'
+        + '<td><span class="tag ' + statusCls + '">' + statusLabel + '</span></td>'
+        + '<td>' + (item.attemptCount || 0) + '</td>'
+        + '<td>' + holdBtn + '</td></tr>';
+    });
+    if (!h) h = '<tr><td colspan="8"><div class="empty-state">\u6682\u65e0\u5f85\u62e8\u6253\u7ebf\u7d22</div></td></tr>';
+    tbody.innerHTML = h;
+  } else {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">\u6682\u65e0\u961f\u5217\u6570\u636e</div></td></tr>';
+  }
+
+  // Hold area table
+  var holdBody = document.getElementById('holdBody');
+  var holdCount = document.getElementById('holdCount');
+  if (p.holdArea && p.holdArea.length > 0) {
+    holdCount.textContent = '(' + p.holdArea.length + ' \u6761)';
+    var hh = '';
+    p.holdArea.forEach(function(item, i) {
+      var sourceLabel = item.source || '--';
+      hh += '<tr><td>' + (i + 1) + '</td>'
+        + '<td>' + esc(item.leadsName) + '</td>'
+        + '<td>' + esc(item.phone) + '</td>'
+        + '<td>' + sourceLabel + '</td>'
+        + '<td>' + fmtTime(item.createTime) + '</td>'
+        + '<td>' + fmtTime(item.movedAt) + '</td>'
+        + '<td><button class="btn small green" onclick="moveBackToQueue(\'' + item.leadsId + '\')">\u79fb\u56de\u961f\u5217</button></td></tr>';
+    });
+    holdBody.innerHTML = hh;
+  } else {
+    holdCount.textContent = '(0 \u6761)';
+    holdBody.innerHTML = '<tr><td colspan="7"><div class="empty-state">\u6682\u65e0\u5f85\u786e\u8ba4\u7ebf\u7d22</div></td></tr>';
+  }
+
+  // Log
   var logEl = document.getElementById('pipelineLog');
   if (p.recentLog && p.recentLog.length > 0) {
     var h = '';
     p.recentLog.forEach(function(entry) {
-      var statusIcon = entry.status === 'written' ? '✅' : entry.status === 'unmatched' ? '⚠️' : entry.status === 'skipped' ? '⏭️' : '❌';
-      h += '<div class="log-entry"><div class="log-time">'+fmtTime(entry.time)+' &nbsp; '+statusIcon+' ['+entry.status+']</div><div class="log-summary">通话 #'+entry.callId+' ('+entry.phone+') — '+esc(entry.message)+'</div></div>';
+      var icon = entry.status === 'completed' ? '\u2705' : entry.status === 'unreachable' ? '\u274c' : entry.status === 'retrying' ? '\u23f3' : entry.status === 'enqueued' ? '\u2795' : entry.status === 'calling' ? '\u260e\ufe0f' : '\u2139\ufe0f';
+      h += '<div class="log-entry"><div class="log-time">' + fmtTime(entry.time) + ' ' + icon + '</div>'
+        + '<div class="log-summary">' + esc(entry.leadsName || entry.phone) + ' - ' + esc(entry.message) + '</div></div>';
     });
     logEl.innerHTML = h;
   } else {
-    logEl.innerHTML = '<div class="empty-state">暂无联动记录。当声狐有新的接通通话时，联动模块会自动匹配线索并写入跟进。</div>';
+    logEl.innerHTML = '<div class="empty-state">\u6682\u65e0\u8054\u52a8\u8bb0\u5f55</div>';
   }
 }
 
@@ -1198,49 +1304,37 @@ async function refreshPipeline() {
   } catch(e) {}
 }
 
-async function togglePipeline() {
+async function moveToHold(leadsId) {
   try {
-    var r = await fetch('/api/pipeline/toggle', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({}) });
+    var r = await fetch('/api/pipeline/hold/' + leadsId, { method:'POST' });
     var d = await r.json();
     if (d.success) refreshPipeline();
   } catch(e) {}
 }
 
-async function runBatchMatch() {
-  document.getElementById('batchMatchResult').textContent = '匹配中...';
+async function moveBackToQueue(leadsId) {
   try {
-    var r = await fetch('/api/pipeline/batch-match', { method:'POST' });
+    var r = await fetch('/api/pipeline/unhold/' + leadsId, { method:'POST' });
     var d = await r.json();
-    if (d.success && d.data) {
-      document.getElementById('batchMatchResult').textContent = '已接通 '+d.data.totalAnswered+' 通，匹配到线索 '+d.data.matchedInCRM+' 条，未匹配 '+d.data.unmatched+' 条';
-      refreshPipeline();
-    } else {
-      document.getElementById('batchMatchResult').textContent = '匹配失败';
-    }
-  } catch(e) { document.getElementById('batchMatchResult').textContent = '匹配出错'; }
+    if (d.success) refreshPipeline();
+  } catch(e) {}
 }
 
-// ===================================================================
-// CSV Export
-// ===================================================================
-function exportCSV() {
-  var leads = filteredLeads.length > 0 ? filteredLeads : allLeads;
-  if (leads.length === 0) { alert('没有数据可导出'); return; }
-  var hdrs = ['线索名称','手机号','电话','负责人','部门','来源','线索池','类别','渠道','获客方式','线索金额','创建人','创建时间','更新时间','状态','等级','地址','邮箱','备注'];
-  var rows = leads.map(function(l) {
-    return [l.leadsName, l.mobile, l.telephone, l.ownerUserName, l.ownerDeptName, l.source, l.assignedPool, l.fieldGjmfug, l.fieldXzhmxa, l.fieldJbdcox, l.fieldKqjpds, l.createUserName, l.createTime, l.updateTime,
-      l.status===1?'正常':l.status===2?'已转化':'已关闭', l.level, l.address, l.email, l.remark
-    ].map(function(v) { return '"'+(v||'').replace(/"/g,'""')+'"'; }).join(',');
-  });
-  var csv = '\ufeff'+hdrs.join(',')+'\n'+rows.join('\n');
-  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = '无极CRM线索_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click(); URL.revokeObjectURL(url);
+async function changeSourceFilter() {
+  var filter = document.getElementById('sourceFilter').value;
+  try {
+    await fetch('/api/pipeline/source-filter', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({filter:filter}) });
+    refreshPipeline();
+  } catch(e) {}
 }
 
-// ===================================================================
+async function togglePipeline() {
+  try {
+    var r = await fetch('/api/pipeline/toggle', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+    var d = await r.json();
+    if (d.success) refreshPipeline();
+  } catch(e) {}
+}// ===================================================================
 // Modal helpers
 // ===================================================================
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
@@ -1338,4 +1432,5 @@ document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
+
 

@@ -34,6 +34,7 @@ const wuji = new WujiCRM();
 const voicefox = new VoiceFox();
 const pipeline = new Pipeline(wuji, voicefox);
 
+
 // ===================================================================
 // Unified Status
 // ===================================================================
@@ -160,7 +161,6 @@ app.post('/api/voicefox/task/create', async (req, res) => {
     const { phone, name, assistantVid } = req.body || {};
     if (!phone) { res.json({ success: false, error: '请提供手机号' }); return; }
     const result = await voicefox.createTask(phone, name, assistantVid);
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -169,7 +169,6 @@ app.post('/api/voicefox/task/create', async (req, res) => {
 app.get('/api/voicefox/task/:taskId', async (req, res) => {
   try {
     const result = await voicefox.getTask(parseInt(req.params.taskId));
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -178,7 +177,6 @@ app.get('/api/voicefox/task/:taskId', async (req, res) => {
 app.get('/api/voicefox/task/:taskId/statistics', async (req, res) => {
   try {
     const result = await voicefox.getTaskStatistics(parseInt(req.params.taskId));
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -187,7 +185,6 @@ app.get('/api/voicefox/task/:taskId/statistics', async (req, res) => {
 app.patch('/api/voicefox/task/:taskId/status/:status', async (req, res) => {
   try {
     const result = await voicefox.updateTaskStatus(parseInt(req.params.taskId), req.params.status);
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -196,7 +193,6 @@ app.patch('/api/voicefox/task/:taskId/status/:status', async (req, res) => {
 app.post('/api/voicefox/tasks/filter', async (req, res) => {
   try {
     const result = await voicefox.filterTasks(req.body || {});
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -207,7 +203,6 @@ app.post('/api/voicefox/calls', async (req, res) => {
   try {
     const { offset, limit, taskId } = req.body || {};
     const result = await voicefox.queryCallLogs(offset || 0, limit || 20, taskId);
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -221,7 +216,6 @@ app.get('/api/voicefox/calls/cached/all', (req, res) => {
 app.get('/api/voicefox/calls/:recordId', async (req, res) => {
   try {
     const result = await voicefox.getCallDetail(parseInt(req.params.recordId));
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -230,7 +224,6 @@ app.get('/api/voicefox/calls/:recordId', async (req, res) => {
 app.get('/api/voicefox/calls/:recordId/transcript', async (req, res) => {
   try {
     const result = await voicefox.getCallTranscript(parseInt(req.params.recordId));
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -239,7 +232,6 @@ app.get('/api/voicefox/calls/:recordId/transcript', async (req, res) => {
 app.get('/api/voicefox/calls/:recordId/summary', async (req, res) => {
   try {
     const result = await voicefox.getCallAiSummary(parseInt(req.params.recordId));
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -248,7 +240,6 @@ app.get('/api/voicefox/calls/:recordId/summary', async (req, res) => {
 app.get('/api/voicefox/calls/:recordId/trace', async (req, res) => {
   try {
     const result = await voicefox.getCallTrace(parseInt(req.params.recordId));
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -275,7 +266,6 @@ app.get('/api/voicefox/calls/:recordId/download', async (req, res) => {
 app.get('/api/voicefox/speakers', async (req, res) => {
   try {
     const result = await voicefox.getSpeakers();
-    res.json({ success: true, data: result });
   } catch (err) {
     res.json({ success: false, error: err.message });
   }
@@ -295,15 +285,23 @@ app.post('/api/pipeline/toggle', (req, res) => {
   res.json({ success: true, enabled: pipeline.enabled });
 });
 
-app.post('/api/pipeline/process/:recordId', async (req, res) => {
-  const ok = await pipeline.processCallById(parseInt(req.params.recordId));
+app.post('/api/pipeline/source-filter', (req, res) => {
+  const { filter } = req.body;
+  const ok = pipeline.setSourceFilter(filter);
+  res.json({ success: ok, sourceFilter: pipeline.sourceFilter });
+});
+
+app.post('/api/pipeline/hold/:leadsId', (req, res) => {
+  const ok = pipeline.moveToHoldArea(req.params.leadsId);
   res.json({ success: ok });
 });
 
-app.post('/api/pipeline/batch-match', async (req, res) => {
-  const result = await pipeline.runBatchMatch();
-  res.json({ success: true, data: result });
+app.post('/api/pipeline/unhold/:leadsId', (req, res) => {
+  const ok = pipeline.moveBackToQueue(req.params.leadsId);
+  res.json({ success: ok });
 });
+
+
 
 // ===================================================================
 // Boot
@@ -318,4 +316,5 @@ app.listen(PORT, () => {
   wuji.boot();
   voicefox.boot();
 });
+
 

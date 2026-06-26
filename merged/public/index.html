@@ -276,7 +276,7 @@
 <!-- Tab: 线索管理 -->
 <!-- ============================================================ -->
 <div class="tab-content active" id="tabLeads">
-  <div class="toolbar">
+    <div class="toolbar">
     <label>自动</label>
     <select id="wujiInterval" onchange="changeWujiInterval()">
       <option value="5000">5秒</option>
@@ -311,10 +311,11 @@
     <span class="count" id="leadsCount">显示 0 条</span>
     <div class="pages" id="leadsPagination"></div>
   </div>
-</div>
 
 <!-- ============================================================ -->
 <!-- Tab: 外呼管理 -->
+
+</div>
 <!-- ============================================================ -->
 <div class="tab-content" id="tabCalls">
   <div class="login-bar" id="voicefoxLoginBar">
@@ -325,62 +326,16 @@
     <button class="btn primary small" onclick="doVoicefoxLogin()">登录声狐</button>
     <span id="vfLoginStatus" style="font-size:12px;color:var(--text2)"></span>
   </div>
-  <div class="toolbar">
-    <label>自动</label>
-    <select id="vfInterval" onchange="changeVfInterval()">
-      <option value="5000">5秒</option>
-      <option value="10000">10秒</option>
-      <option value="15000" selected>15秒</option>
-      <option value="30000">30秒</option>
-      <option value="60000">1分</option>
-    </select>
-    <label>搜索</label>
-    <input type="text" id="callsSearch" placeholder="号码/任务" oninput="filterCalls()" style="width:120px">
-    <select id="callsStatus" onchange="filterCalls()">
-      <option value="">全部状态</option>
-      <option value="answered">已接通</option>
-      <option value="no_answer">无人接听</option>
-      <option value="busy">占线</option>
-      <option value="failed">失败</option>
-    </select>
-    <button class="btn primary small" onclick="manualSyncCalls()" id="syncCallsBtn">同步</button>
-    <button class="btn small" onclick="showCallLog()">同步日志</button>
-  </div>
-  <div class="status-bar">
-    <span class="stat" id="vfSyncInfo">等待登录...</span>
-    <span class="info" id="vfError" style="display:none;color:var(--red)"></span>
-  </div>
-  <div class="tabs" style="position:static;border-bottom:1px solid var(--border);padding:0 20px;background:transparent">
-    <div class="tab active" data-subtab="call-logs" onclick="switchSubtab('call-logs')">通话记录</div>
-    <div class="tab" data-subtab="tasks" onclick="switchSubtab('tasks');loadTaskList()">任务管理</div>
-    <div class="tab" data-subtab="create" onclick="switchSubtab('create')">创建任务</div>
-    <div class="tab" data-subtab="stats" onclick="switchSubtab('stats');updateCallStats()">数据统计</div>
-  </div>
+  <div class="stats-cards" id="callStatsCards">
+      <div class="stats-card"><div class="label">总通话数</div><div class="value" id="statTotal">--</div></div>
+      <div class="stats-card"><div class="label">已接通</div><div class="value green" id="statAnswered">--</div></div>
+      <div class="stats-card"><div class="label">无人接听</div><div class="value orange" id="statNoAnswer">--</div></div>
+      <div class="stats-card"><div class="label">占线</div><div class="value blue" id="statBusy">--</div></div>
+      <div class="stats-card"><div class="label">失败</div><div class="value red" id="statFailed">--</div></div>
+      <div class="stats-card"><div class="label">最后同步</div><div class="value" id="statLastSync" style="font-size:13px">--</div></div>
+    </div>
 
-  <!-- Subtab: Call Logs -->
-  <div class="subtab-content active" id="subtabCallLogs">
-    <div class="table-wrap">
-      <table><thead><tr id="callsHead"></tr></thead><tbody id="callsBody"></tbody></table>
-    </div>
-    <div class="pagination">
-      <span class="count" id="callsCount">显示 0 条</span>
-      <div class="pages" id="callsPagination"></div>
-    </div>
-  </div>
-
-  <!-- Subtab: Tasks -->
-  <div class="subtab-content" id="subtabTasks">
-    <div class="toolbar" style="border:none;padding:8px 20px">
-      <input type="text" id="taskSearchName" placeholder="搜索任务名称" oninput="loadTaskList()" style="width:160px">
-    </div>
-    <div class="table-wrap">
-      <table><thead><tr><th>任务名称</th><th>ID</th><th>状态</th><th>数量</th><th>创建时间</th><th>操作</th></tr></thead><tbody id="tasksBody"></tbody></table>
-    </div>
-  </div>
-
-  <!-- Subtab: Create Task -->
-  <div class="subtab-content" id="subtabCreate">
-    <div class="form-wrap">
+  <div class="form-wrap">
       <div class="field">
         <label>手机号 <span style="color:var(--red)">*</span></label>
         <input type="text" id="createPhone" placeholder="13800138000">
@@ -398,21 +353,38 @@
       </div>
     </div>
     <div id="createResult" style="padding:0 20px 12px;font-size:12px;color:var(--text2)"></div>
-  </div>
 
-  <!-- Subtab: Stats -->
-  <div class="subtab-content" id="subtabStats">
-    <div class="stats-cards" id="callStatsCards">
-      <div class="stats-card"><div class="label">总通话数</div><div class="value" id="statTotal">--</div></div>
-      <div class="stats-card"><div class="label">已接通</div><div class="value green" id="statAnswered">--</div></div>
-      <div class="stats-card"><div class="label">无人接听</div><div class="value orange" id="statNoAnswer">--</div></div>
-      <div class="stats-card"><div class="label">占线</div><div class="value blue" id="statBusy">--</div></div>
-      <div class="stats-card"><div class="label">失败</div><div class="value red" id="statFailed">--</div></div>
-      <div class="stats-card"><div class="label">最后同步</div><div class="value" id="statLastSync" style="font-size:13px">--</div></div>
+    <div class="toolbar">
+    <label>自动</label>
+    <select id="vfInterval" onchange="changeVfInterval()">
+      <option value="5000">5秒</option>
+      <option value="10000">10秒</option>
+      <option value="15000" selected>15秒</option>
+      <option value="30000">30秒</option>
+      <option value="60000">1分</option>
+    </select>
+    <label>搜索</label>
+    <input type="text" id="callsSearch" placeholder="号码/任务" oninput="filterCalls()" style="width:120px">
+    <select id="callsStatus" onchange="filterCalls()">
+      <option value="">全部状态</option>\n      <option value="answered">已接通</option>\n      <option value="not_answered">未接通</option>
+    </select>
+    <button class="btn primary small" onclick="manualSyncCalls()" id="syncCallsBtn">同步</button>
+    <button class="btn small" onclick="showCallLog()">同步日志</button>
+  </div>
+  <div class="status-bar">
+    <span class="stat" id="vfSyncInfo">等待登录...</span>
+    <span class="info" id="vfError" style="display:none;color:var(--red)"></span>
+  </div>
+  <div class="pagination">
+      <span class="count" id="callsCount">显示 0 条</span>
+      <div class="pages" id="callsPagination"></div>
     </div>
-  </div>
-</div>
+    <div class="table-wrap">
+      <table><thead><tr id="callsHead"></tr></thead><tbody id="callsBody"></tbody></table>
+    </div>
 
+
+</div>
 <!-- ============================================================ -->
 <!-- Tab: 联动看板 -->
 <!-- ============================================================ -->
@@ -925,7 +897,8 @@ function filterCalls() {
     if (search) {
       if (!(c.callee||'').includes(search) && !((c.task&&c.task.name)||'').toLowerCase().includes(search) && !(c.taskId||'').toString().includes(search)) return false;
     }
-    if (status && (c.hangupReason||'') !== status) return false;
+    if (status === 'answered' && (c.hangupReason||'') !== 'answered') return false;
+      if (status === 'not_answered' && (c.hangupReason||'') === 'answered') return false;
     return true;
   });
   callsPage = 1; sortCallsData(); renderCallsBody();
@@ -999,78 +972,82 @@ async function changeVfInterval() {
 async function showCallDetail(recordId) {
   var modal = document.getElementById('detailModal');
   var body = document.getElementById('detailBody');
-  document.getElementById('detailTitle').textContent = '通话详情 #'+recordId;
+  document.getElementById('detailTitle').textContent = '\u901a\u8bdd\u8be6\u60c5 #' + recordId;
   modal.classList.add('open');
-  body.innerHTML = '<div class="empty-state">加载中...</div>';
+  body.innerHTML = '<div class="empty-state">\u52a0\u8f7d\u4e2d...</div>';
   try {
-    var [detailR, transcriptR, summaryR] = await Promise.all([
-      fetch('/api/voicefox/calls/'+recordId),
-      fetch('/api/voicefox/calls/'+recordId+'/transcript'),
-      fetch('/api/voicefox/calls/'+recordId+'/summary'),
-    ]);
+    // Step 1: load basic detail (fast)
+    var detailR = await fetch('/api/voicefox/calls/' + recordId);
     var detail = await detailR.json();
-    var transcript = await transcriptR.json();
-    var summary = await summaryR.json();
     var d = detail.data || {};
     var html = '';
-
-    // Basic info
-    html += '<div class="detail-section"><h3>基本信息</h3><div class="detail-grid">';
-    html += '<div class="field-row"><span class="field-label">被叫</span><span class="field-value">'+esc(d.callee||'')+'</span></div>';
-    html += '<div class="field-row"><span class="field-label">归属地</span><span class="field-value">'+esc(d.calleeAttribute||'')+'</span></div>';
-    html += '<div class="field-row"><span class="field-label">主叫线路</span><span class="field-value">'+esc(d.caller||'')+'</span></div>';
-    html += '<div class="field-row"><span class="field-label">状态</span><span class="field-value"><span class="tag '+(d.hangupReason==='answered'?'answered':d.hangupReason==='no_answer'?'no_answer':d.hangupReason==='busy'?'busy':'failed')+'">'+esc(d.hangupReason||'')+'</span></span></div>';
-    html += '<div class="field-row"><span class="field-label">挂断方</span><span class="field-value">'+(d.hangupSide==='caller'?'主叫挂断':d.hangupSide==='callee'?'被叫挂断':esc(d.hangupSide||'-'))+'</span></div>';
-    html += '<div class="field-row"><span class="field-label">时长</span><span class="field-value">'+fmtDur(d.duration)+' (计费 '+fmtDur(d.billsec)+')</span></div>';
-    html += '<div class="field-row"><span class="field-label">开始</span><span class="field-value">'+fmtTime(d.startAt)+'</span></div>';
-    if (d.answerAt) html += '<div class="field-row"><span class="field-label">接通</span><span class="field-value">'+fmtTime(d.answerAt)+'</span></div>';
-    html += '<div class="field-row"><span class="field-label">任务</span><span class="field-value">'+esc((d.task&&d.task.name)||'')+'</span></div>';
-    html += '<div class="field-row"><span class="field-label">任务ID</span><span class="field-value">'+(d.taskId||'')+'</span></div>';
+    html += '<div class="detail-section"><h3>\u57fa\u672c\u4fe1\u606f</h3><div class="detail-grid">';
+    html += '<div class="field-row"><span class="field-label">\u88ab\u53eb</span><span class="field-value">' + esc(d.callee||'') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u5f52\u5c5e\u5730</span><span class="field-value">' + esc(d.calleeAttribute||'') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u4e3b\u53eb\u7ebf\u8def</span><span class="field-value">' + esc(d.caller||'') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u72b6\u6001</span><span class="field-value"><span class="tag ' + (d.hangupReason==='answered'?'answered':d.hangupReason==='no_answer'?'no_answer':d.hangupReason==='busy'?'busy':'failed') + '">' + esc(d.hangupReason||'') + '</span></span></div>';
+    html += '<div class="field-row"><span class="field-label">\u6302\u65ad\u65b9</span><span class="field-value">' + (d.hangupSide==='caller'?'\u4e3b\u53eb\u6302\u65ad':d.hangupSide==='callee'?'\u88ab\u53eb\u6302\u65ad':esc(d.hangupSide||'-')) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u65f6\u957f</span><span class="field-value">' + fmtDur(d.duration) + ' (\u8ba1\u8d39 ' + fmtDur(d.billsec) + ')</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u5f00\u59cb</span><span class="field-value">' + fmtTime(d.startAt) + '</span></div>';
+    if (d.answerAt) html += '<div class="field-row"><span class="field-label">\u63a5\u901a</span><span class="field-value">' + fmtTime(d.answerAt) + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u4efb\u52a1</span><span class="field-value">' + esc((d.task&&d.task.name)||'') + '</span></div>';
+    html += '<div class="field-row"><span class="field-label">\u4efb\u52a1ID</span><span class="field-value">' + (d.taskId||'') + '</span></div>';
     html += '</div></div>';
-
-    // Recording
     var recordUrl = d.recordFile || d.rawRecordFile || '';
-    html += '<div class="detail-section"><h3>录音文件</h3>';
-    if (recordUrl) html += '<button class="btn green small" onclick="downloadRecording('+recordId+')">下载录音 (WAV)</button> <span id="dlStatus_'+recordId+'" style="font-size:11px;color:var(--text2)"></span>';
-    else html += '<div style="color:var(--text2);font-size:12px">无录音文件</div>';
+    html += '<div class="detail-section"><h3>\u5f55\u97f3\u6587\u4ef6</h3>';
+    if (recordUrl) html += '<button class="btn green small" onclick="downloadRecording(' + recordId + ')">\u4e0b\u8f7d\u5f55\u97f3 (WAV)</button> <span id="dlStatus_' + recordId + '" style="font-size:11px;color:var(--text2)"></span>';
+    else html += '<div style="color:var(--text2);font-size:12px">\u65e0\u5f55\u97f3\u6587\u4ef6</div>';
     html += '</div>';
-
-    // Collect data
     var collect = d.collect;
     if (collect && collect.length > 0 && collect[0].items) {
-      var items = collect[0].items;
-      var hasData = false;
+      var items = collect[0].items; var hasData = false;
       for (var i=0;i<items.length;i++) { if (items[i].answer) { hasData=true; break; } }
       if (hasData) {
-        html += '<div class="detail-section"><h3>AI 采集数据</h3><div class="collect-items">';
-        for (var i=0;i<items.length;i++) { if (items[i].answer) html += '<div class="collect-item"><span class="q">'+esc(items[i].question)+'：</span><span class="a">'+esc(items[i].answer)+'</span></div>'; }
+        html += '<div class="detail-section"><h3>AI \u91c7\u96c6\u6570\u636e</h3><div class="collect-items">';
+        for (var i=0;i<items.length;i++) { if (items[i].answer) html += '<div class="collect-item"><span class="q">' + esc(items[i].question) + '\uff1a</span><span class="a">' + esc(items[i].answer) + '</span></div>'; }
         html += '</div></div>';
       }
     }
+    // Show basic info immediately
+    body.innerHTML = html;
+    body.innerHTML += '<div class="detail-section" id="loadingExtra"><h3>\u52a0\u8f7d\u4e2d...</h3><div class="empty-state" style="padding:10px">\u6b63\u5728\u52a0\u8f7d\u5bf9\u8bdd\u8bb0\u5f55\u548cAI\u6458\u8981...</div></div>';
 
-    // AI Summary
-    if (summary.data) {
-      var s = summary.data;
-      if (s.summary || s.suggestion) {
-        html += '<div class="detail-section"><h3>AI 摘要</h3><div class="summary-box">';
-        if (s.summary) html += '<div>'+esc(s.summary)+'</div>';
-        if (s.suggestion) html += '<div style="margin-top:4px"><strong>建议：</strong>'+esc(s.suggestion)+'</div>';
-        html += '</div></div>';
+    // Step 2: load transcript and summary in background
+    try {
+      var [trR, suR] = await Promise.all([
+        fetch('/api/voicefox/calls/' + recordId + '/transcript'),
+        fetch('/api/voicefox/calls/' + recordId + '/summary'),
+      ]);
+      var transcript = await trR.json();
+      var summary = await suR.json();
+      var extra = '';
+      if (summary.data) {
+        var s = summary.data;
+        if (s.summary || s.suggestion) {
+          extra += '<div class="detail-section"><h3>AI \u6458\u8981</h3><div class="summary-box">';
+          if (s.summary) extra += '<div>' + esc(s.summary) + '</div>';
+          if (s.suggestion) extra += '<div style="margin-top:4px"><strong>\u5efa\u8bae\uff1a</strong>' + esc(s.suggestion) + '</div>';
+          extra += '</div></div>';
+        }
       }
+      if (transcript.success && transcript.data && transcript.data.length > 0) {
+        extra += '<div class="detail-section"><h3>\u5bf9\u8bdd\u8bb0\u5f55 (' + transcript.data.length + ' \u6761)</h3><div>';
+        transcript.data.forEach(function(item) {
+          var cls = item.speaker === 'AI' ? 'ai' : item.speaker === '\u5ba2\u6237' ? 'client' : 'system';
+          extra += '<div class="transcript-item ' + cls + '"><span class="time">' + item.time + 's</span><div class="speaker">' + esc(item.speaker) + '</div><div>' + esc(item.content) + '</div></div>';
+        });
+        extra += '</div></div>';
+      }
+      var le = document.getElementById('loadingExtra');
+      if (le) le.outerHTML = extra;
+      else body.innerHTML += extra;
+    } catch(e) {
+      var le = document.getElementById('loadingExtra');
+      if (le) le.outerHTML = '<div class="detail-section"><h3>\u5bf9\u8bdd\u8bb0\u5f55</h3><div class="empty-state" style="padding:10px;color:var(--text2)">\u52a0\u8f7d\u5931\u8d25</div></div>';
     }
-
-    // Transcript
-    if (transcript.success && transcript.data && transcript.data.length > 0) {
-      html += '<div class="detail-section"><h3>对话记录 ('+transcript.data.length+' 条)</h3><div>';
-      transcript.data.forEach(function(item) {
-        var cls = item.speaker === 'AI' ? 'ai' : item.speaker === '客户' ? 'client' : 'system';
-        html += '<div class="transcript-item '+cls+'"><span class="time">'+item.time+'s</span><div class="speaker">'+esc(item.speaker)+'</div><div>'+esc(item.content)+'</div></div>';
-      });
-      html += '</div></div>';
-    }
-
-    body.innerHTML = html || '<div class="empty-state">无法加载详情</div>';
-  } catch(e) { body.innerHTML = '<div class="empty-state">加载失败: '+e.message+'</div>'; }
+  } catch(e) {
+    body.innerHTML = '<div class="empty-state">\u52a0\u8f7d\u5931\u8d25: ' + e.message + '</div>';
+  }
 }
 
 async function downloadRecording(recordId) {
@@ -1243,7 +1220,8 @@ function updatePipelineUI(p) {
         default: statusLabel = item.status; statusCls = 'pending';
       }
       var sourceLabel = item.source || '--';
-      var holdBtn = item.status === 'pending' ? '<button class="btn small" onclick="moveToHold(\'' + item.leadsId + '\')">\u79fb\u5165\u5f85\u786e\u8ba4</button>' : '';
+      var callBtn = '<button class="btn small green" onclick="manualCall(\'' + item.leadsId + '\')">拨打</button>';
+var holdBtn = item.status === 'pending' ? '<button class="btn small" onclick="moveToHold(\'' + item.leadsId + '\')">搁置</button>' : '';
       h += '<tr><td>' + (i + 1) + '</td>'
         + '<td>' + esc(item.leadsName) + '</td>'
         + '<td>' + esc(item.phone) + '</td>'
@@ -1251,7 +1229,7 @@ function updatePipelineUI(p) {
         + '<td>' + fmtTime(item.createTime) + '</td>'
         + '<td><span class="tag ' + statusCls + '">' + statusLabel + '</span></td>'
         + '<td>' + (item.attemptCount || 0) + '</td>'
-        + '<td>' + holdBtn + '</td></tr>';
+        + '<td>' + callBtn + ' ' + holdBtn + '</td></tr>';
     });
     if (!h) h = '<tr><td colspan="8"><div class="empty-state">\u6682\u65e0\u5f85\u62e8\u6253\u7ebf\u7d22</div></td></tr>';
     tbody.innerHTML = h;
@@ -1273,7 +1251,7 @@ function updatePipelineUI(p) {
         + '<td>' + sourceLabel + '</td>'
         + '<td>' + fmtTime(item.createTime) + '</td>'
         + '<td>' + fmtTime(item.movedAt) + '</td>'
-        + '<td><button class="btn small green" onclick="moveBackToQueue(\'' + item.leadsId + '\')">\u79fb\u56de\u961f\u5217</button></td></tr>';
++ '<td><button class="btn small green" onclick="moveBackToQueue(\'' + item.leadsId + '\')">\u79fb\u56de\u961f\u5217</button> <button class="btn small green" onclick="manualCall(\'' + item.leadsId + '\')">拨打</button></td></tr>';
     });
     holdBody.innerHTML = hh;
   } else {
@@ -1301,6 +1279,14 @@ async function refreshPipeline() {
     var r = await fetch('/api/pipeline/status');
     var d = await r.json();
     if (d.success) updatePipelineUI(d);
+  } catch(e) {}
+}
+
+async function manualCall(leadsId) {
+  try {
+    var r = await fetch('/api/pipeline/call-manual/' + leadsId, { method:'POST' });
+    var d = await r.json();
+    if (d.success) refreshPipeline();
   } catch(e) {}
 }
 
@@ -1432,5 +1418,7 @@ document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
+
+
 
 

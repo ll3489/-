@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+﻿const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 const { save, load } = require('./persist');
 
@@ -348,9 +348,7 @@ class VoiceFox {
       this._saveToDisk();
       console.log('[声狐] 同步完成: ' + info.total + ' 通, ' + info.answered + ' 接通');
 
-      if (newlyAnswered.length > 0 && this.onSync) {
-        this.onSync(newlyAnswered, info);
-      }
+      if (this.onSync) { this.onSync(newlyAnswered, info); }
 
       return info;
     } catch (err) {
@@ -407,3 +405,4 @@ class VoiceFox {
 }
 
 module.exports = { VoiceFox };
+

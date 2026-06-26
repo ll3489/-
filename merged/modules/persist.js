@@ -12,10 +12,9 @@ function ensureDir() {
 function save(name, data) {
   try {
     ensureDir();
-    const file = path.join(DATA_DIR, name + '.json');
-    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+    fs.writeFileSync(path.join(DATA_DIR, name + '.json'), JSON.stringify(data, null, 2), 'utf8');
   } catch (err) {
-    console.error(`[Persist] 保存 ${name} 失败:`, err.message);
+    console.error('[Persist] 保存 ' + name + ' 失败:', err.message);
   }
 }
 
@@ -24,11 +23,10 @@ function load(name) {
     ensureDir();
     const file = path.join(DATA_DIR, name + '.json');
     if (fs.existsSync(file)) {
-      const raw = fs.readFileSync(file, 'utf8');
-      return JSON.parse(raw);
+      return JSON.parse(fs.readFileSync(file, 'utf8'));
     }
   } catch (err) {
-    console.error(`[Persist] 读取 ${name} 失败:`, err.message);
+    console.error('[Persist] 读取 ' + name + ' 失败:', err.message);
   }
   return null;
 }

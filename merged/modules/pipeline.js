@@ -133,7 +133,7 @@ class Pipeline {
     const next = this.queue.find(q => q.status === 'pending');
     if (!next) return;
     try {
-      const result = await this.voicefox.createTask(next.phone, '�Զ�_' + (next.leadsName || next.phone).slice(0,20));
+      const result = await this.voicefox.createTask(next.phone, '\u81ea\u52a8_' + (next.leadsName || next.phone).slice(0,20));
       next.status = 'calling'; next.taskId = result.id;
       next.lastAttemptAt = new Date().toISOString(); next.attemptCount++;
       this.activeLeadsId = next.leadsId; this.activePhone = next.phone; this.activeTaskId = result.id;
@@ -185,11 +185,10 @@ class Pipeline {
           const lines = await this.voicefox.getCallTranscript(matchedCall.id);
           if (lines && lines.length > 0) transcript = lines.slice(0, 6).map(l => '[' + l.speaker + '] ' + l.content).join('\n');
         } catch(e) {}
-        let content = '[AI���] �ѽ�ͨ\nͨ��ʱ��: ' + (matchedCall.duration || 0) + '��\n';
-        if (summary) content += 'AIժҪ: ' + summary + '\n';
-        if (suggestion) content += 'AI����: ' + suggestion + '\n';
-        if (transcript) content += '�Ի�Ƭ��:\n' + transcript + '\n';
-        try { await this.wuji.writeFollowUp(item.leadsId, content); } catch(e) {}
+        let content = '[AI\u5916\u547c] \u5df2\u63a5\u901a\n\u901a\u8bdd\u65f6\u957f: ' + (matchedCall.duration || 0) + '\u79d2\n' + (matchedCall.duration || 0) + '\u79d2\n';
+        if (summary) content += 'AI\u6458\u8981: ' + summary + '\n';
+        if (suggestion) content += 'AI\u5efa\u8bae: ' + suggestion + '\n';
+        if (transcript) content += '\u5bf9\u8bdd\u7247\u6bb5:\n' + transcript + '\n';try { await this.wuji.writeFollowUp(item.leadsId, content); } catch(e) {}
         item.status = 'completed';
         this.stats.totalAnswered++;
         if (wasManual) this.holdArea = this.holdArea.filter(h => h.leadsId !== item.leadsId);
@@ -237,7 +236,7 @@ class Pipeline {
       }
     }
     try {
-      const result = await this.voicefox.createTask(item.phone, '�ֶ�_' + (item.leadsName || item.phone).slice(0,20));
+      const result = await this.voicefox.createTask(item.phone, '\u624b\u52a8_' + (item.leadsName || item.phone).slice(0,20));
       item.status = 'calling'; item.taskId = result.id;
       item.lastAttemptAt = new Date().toISOString(); item.attemptCount++;
       this._saveToDisk(); return true;

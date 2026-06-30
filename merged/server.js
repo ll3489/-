@@ -2,6 +2,7 @@
 const { WujiCRM, FIELD_LABELS } = require('./modules/wuji-crm');
 const { VoiceFox } = require('./modules/voicefox');
 const { Pipeline } = require('./modules/pipeline');
+const { getConfig, setConfig, isConfigured } = require('./modules/config');
 
 const app = express();
 const PORT = process.env.PORT || 3456;
@@ -320,6 +321,36 @@ app.post('/api/pipeline/unhold/:leadsId', (req, res) => {
 
 
 // ===================================================================
+// Config
+// ===================================================================
+
+app.get('/api/config', (req, res) => {
+  const cfg = getConfig();
+  res.json({
+    configured: isConfigured(),
+    wuji: { baseUrl: cfg.wuji.baseUrl, phone: cfg.wuji.phone ? '***' : '' },
+    voicefox: { baseUrl: cfg.voicefox.baseUrl, email: cfg.voicefox.email ? '***' : '' },
+  });
+});
+
+app.post('/api/config', (req, res) => {
+  const { wuji, voicefox } = req.body || {};
+  if (!wuji || !voicefox || !wuji.phone || !wuji.password || !voicefox.email || !voicefox.password) {
+    res.json({ success: false, error: '请填写所有必填字段' });
+    return;
+  }
+  const cfg = getConfig();
+  cfg.wuji.baseUrl = wuji.baseUrl || cfg.wuji.baseUrl;
+  cfg.wuji.phone = wuji.phone;
+  cfg.wuji.password = wuji.password;
+  cfg.voicefox.baseUrl = voicefox.baseUrl || cfg.voicefox.baseUrl;
+  cfg.voicefox.email = voicefox.email;
+  cfg.voicefox.password = voicefox.password;
+  setConfig(cfg);
+  res.json({ success: true });
+});
+
+// ===================================================================
 // Boot
 // ===================================================================
 app.listen(PORT, () => {
@@ -329,8 +360,12 @@ app.listen(PORT, () => {
   console.log('  http://localhost:' + PORT);
   console.log('============================================');
   console.log('');
-  wuji.boot();
-  voicefox.boot();
+  if (isConfigured()) {
+    wuji.boot();
+    voicefox.boot();
+  } else {
+    console.log('[系统] 请先在页面中配置登录凭证');
+  }
 });
 
 

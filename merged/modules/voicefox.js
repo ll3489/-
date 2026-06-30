@@ -1,13 +1,17 @@
 ﻿const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 const { save, load } = require('./persist');
+const { getConfig, setConfig } = require('./config');
 
 // ---------- Config ----------
-const CONFIG = {
-  baseUrl: process.env.VOICEFOX_BASE_URL || 'https://app.voicefox.cn',
-  email: process.env.VOICEFOX_EMAIL || '3304495257@qq.com',
-  password: process.env.VOICEFOX_PASSWORD || '12345678.',
-};
+function getVoicefoxConfig() {
+  const cfg = getConfig();
+  return {
+    baseUrl: cfg.voicefox.baseUrl || process.env.VOICEFOX_BASE_URL || 'https://app.voicefox.cn',
+    email: cfg.voicefox.email || process.env.VOICEFOX_EMAIL || '',
+    password: cfg.voicefox.password || process.env.VOICEFOX_PASSWORD || '',
+  };
+}
 
 const MAX_LOG = 100;
 
@@ -73,7 +77,7 @@ class VoiceFox {
 
   // ---------- Low-level API ----------
   async apiRequest(method, path, opts = {}) {
-    const url = CONFIG.baseUrl + path;
+    const url = getVoicefoxConfig().baseUrl + path;
     const headers = {
       'Accept': 'application/json',
       ...(opts.headers || {}),
@@ -111,7 +115,7 @@ class VoiceFox {
     if (resp.status >= 300 && resp.status < 400) {
       const location = resp.headers.get('location');
       if (location) {
-        resp = await fetch(location.startsWith('http') ? location : CONFIG.baseUrl + location, {
+        resp = await fetch(location.startsWith('http') ? location : getVoicefoxConfig().baseUrl + location, {
           headers: { 'Cookie': this.buildCookieHeader() },
           timeout: 30000,
         });
@@ -134,8 +138,8 @@ class VoiceFox {
 
   // ---------- Auth ----------
   async doLogin(email, password) {
-    const e = email || CONFIG.email;
-    const p = password || CONFIG.password;
+    const e = email || getVoicefoxConfig().email;
+    const p = password || getVoicefoxConfig().password;
     if (!e || !p) {
       this.loginError = '请提供邮箱和密码';
       return false;
@@ -155,8 +159,7 @@ class VoiceFox {
       this.userProfile = data;
       this.isLoggedIn = true;
       this.loginError = null;
-      CONFIG.email = e;
-      CONFIG.password = p;
+      var _cfg = getConfig(); _cfg.voicefox.email = e; _cfg.voicefox.password = p; setConfig(_cfg);
       console.log('[声狐] 登录成功 - 项目: ' + this.projectId + ', 用户: ' + (data.displayName || data.email));
       return true;
     } catch (err) {
@@ -219,7 +222,7 @@ class VoiceFox {
     ].join('\r\n');
 
     const cookie = this.buildCookieHeader();
-    const resp = await fetch(`${CONFIG.baseUrl}/api/project/${this.projectId}/task/import_number/${taskId}`, {
+    const resp = await fetch(`${getVoicefoxConfig().baseUrl}/api/project/${this.projectId}/task/import_number/${taskId}`, {
       method: 'POST',
       headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Cookie': cookie },
       body: formBody, timeout: 30000,
@@ -373,7 +376,7 @@ class VoiceFox {
   }
 
   async boot() {
-    if (!CONFIG.email || !CONFIG.password) {
+    if (!getVoicefoxConfig().email || !getVoicefoxConfig().password) {
       console.log('[声狐] 等待前端配置登录凭证');
       return;
     }

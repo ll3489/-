@@ -2,13 +2,17 @@
 const { chromium } = require('playwright');
 const querystring = require('querystring');
 const { save, load } = require('./persist');
+const { getConfig, setConfig } = require('./config');
 
 // ---------- Config ----------
-const CONFIG = {
-  baseUrl: process.env.WUJI_BASE_URL || 'https://wuji.rpaab.com',
-  phone: process.env.WUJI_PHONE || '15583598381',
-  password: process.env.WUJI_PASSWORD || 'll123456',
-};
+function getWujiConfig() {
+  const cfg = getConfig();
+  return {
+    baseUrl: cfg.wuji.baseUrl || process.env.WUJI_BASE_URL || 'https://wuji.rpaab.com',
+    phone: cfg.wuji.phone || process.env.WUJI_PHONE || '',
+    password: cfg.wuji.password || process.env.WUJI_PASSWORD || '',
+  };
+}
 
 const FIELD_LABELS = {
   leadsName:'线索名称', mobile:'手机号', telephone:'电话', ownerUserName:'负责人',
@@ -64,12 +68,12 @@ class WujiCRM {
       browser = await chromium.launch({ headless: true });
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await page.goto(CONFIG.baseUrl, { waitUntil: 'load', timeout: 60000 }).catch(() => {});
+      await page.goto(getWujiConfig().baseUrl, { waitUntil: 'load', timeout: 60000 }).catch(() => {});
       await page.waitForTimeout(5000);
-      await page.fill('input[placeholder="请输入手机号"]', CONFIG.phone);
+      await page.fill('input[placeholder="请输入手机号"]', getWujiConfig().phone);
       await page.click('button:has-text("继续")');
       await page.waitForSelector('input[placeholder="请输入密码"]', { timeout: 15000 });
-      await page.fill('input[placeholder="请输入密码"]', CONFIG.password);
+      await page.fill('input[placeholder="请输入密码"]', getWujiConfig().password);
       await page.click('button:has-text("登录")');
       let ok = false;
       for (let i = 0; i < 30; i++) {
@@ -101,7 +105,7 @@ class WujiCRM {
   async apiJSON(path, body) {
     if (!this.adminToken) return null;
     try {
-      const resp = await fetch(CONFIG.baseUrl + path, {
+      const resp = await fetch(getWujiConfig().baseUrl + path, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json;charset=UTF-8', 'client': 'ADMIN_WEB', 'admin-token': this.adminToken },
         body: JSON.stringify(body),
@@ -120,7 +124,7 @@ class WujiCRM {
   async apiForm(path, body) {
     if (!this.adminToken) return null;
     try {
-      const resp = await fetch(CONFIG.baseUrl + path, {
+      const resp = await fetch(getWujiConfig().baseUrl + path, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'client': 'ADMIN_WEB', 'admin-token': this.adminToken },
         body: querystring.stringify(body),

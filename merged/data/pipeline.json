@@ -1,6 +1,32 @@
 {
   "queue": [
     {
+      "leadsId": "2071832916518993920",
+      "phone": "19104484254",
+      "source": "系统接入",
+      "leadsName": "快乐些",
+      "createTime": "2026-06-30 13:47:14",
+      "attemptCount": 0,
+      "status": "pending",
+      "enqueuedAt": "2026-06-30T05:55:22.487Z",
+      "lastAttemptAt": null,
+      "lastHangupReason": null,
+      "taskId": null
+    },
+    {
+      "leadsId": "2071831663739109376",
+      "phone": "13654526699",
+      "source": "系统接入",
+      "leadsName": "爱车的男人",
+      "createTime": "2026-06-30 13:42:16",
+      "attemptCount": 0,
+      "status": "pending",
+      "enqueuedAt": "2026-06-30T05:55:22.487Z",
+      "lastAttemptAt": null,
+      "lastHangupReason": null,
+      "taskId": null
+    },
+    {
       "leadsId": "2071825088903348224",
       "phone": "15339876159",
       "source": "系统接入",
@@ -30,7 +56,7 @@
   "holdArea": [],
   "log": [],
   "stats": {
-    "totalEnqueued": 81,
+    "totalEnqueued": 83,
     "totalAnswered": 5,
     "totalFailed": 0,
     "totalUnreachable": 21

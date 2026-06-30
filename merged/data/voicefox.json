@@ -22306,7 +22306,7 @@
       "scriptPlan": null,
       "collect": [
         {
-          "vid": 0,
+          "vid": 42558,
           "vname": "",
           "items": [
             {
@@ -22336,7 +22336,7 @@
           ]
         },
         {
-          "vid": 42558,
+          "vid": 0,
           "vname": "",
           "items": [
             {
@@ -35834,7 +35834,7 @@
       "scriptPlan": null,
       "collect": [
         {
-          "vid": 0,
+          "vid": 42558,
           "vname": "",
           "items": [
             {
@@ -35864,7 +35864,7 @@
           ]
         },
         {
-          "vid": 42558,
+          "vid": 0,
           "vname": "",
           "items": [
             {
@@ -36493,7 +36493,7 @@
       "assistantIds": null
     }
   ],
-  "lastFetchTime": "2026-06-30T05:26:31.675Z",
+  "lastFetchTime": "2026-06-30T05:59:37.718Z",
   "lastSyncInfo": {
     "info": {
       "total": 209,
@@ -36505,625 +36505,9 @@
       "busy": 0,
       "failed": 0
     },
-    "time": "2026-06-30T05:26:31.675Z"
+    "time": "2026-06-30T05:59:37.718Z"
   },
   "updateLog": [
-    {
-      "time": "2026-06-30T05:11:15.347Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:11:30.306Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:11:30.337Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:11:45.410Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:12:00.415Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:12:15.428Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:12:30.280Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:12:30.374Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:12:45.484Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:13:00.583Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:13:15.468Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:13:30.372Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:13:30.672Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:13:45.437Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:00.435Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:15.437Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:25.750Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:30.192Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:40.442Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:45.347Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:14:55.300Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:00.224Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:10.390Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:15.269Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:25.304Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:30.269Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:40.351Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:45.244Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:15:55.324Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:00.286Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:10.470Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:15.250Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:25.270Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:30.285Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:40.265Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:45.278Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:16:55.365Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:17:00.336Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:17:15.500Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:17:30.423Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:17:30.589Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:17:45.603Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:18:00.597Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:18:15.609Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:18:30.719Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:18:31.328Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:18:45.585Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:00.660Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:02.682Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:10.228Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:15.780Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:25.323Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:30.410Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:41.873Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:19:45.408Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:00.663Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:01.282Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:10.263Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:15.613Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:30.341Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:30.612Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:20:45.657Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:00.678Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:15.693Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:30.309Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:30.441Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:40.327Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:45.701Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:21:55.279Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:00.785Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:10.240Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:15.693Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:25.380Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:30.484Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:40.229Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:45.761Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
-    {
-      "time": "2026-06-30T05:22:55.250Z",
-      "total": 209,
-      "answered": 6,
-      "noAnswer": 0,
-      "busy": 0,
-      "failed": 0
-    },
     {
       "time": "2026-06-30T05:23:00.765Z",
       "total": 209,
@@ -37302,6 +36686,622 @@
     },
     {
       "time": "2026-06-30T05:26:31.675Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:26:46.670Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:27:01.059Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:27:15.957Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:27:31.095Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:27:45.660Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:27:46.027Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:28:00.994Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:28:15.992Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:28:30.425Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:28:30.760Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:28:46.181Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:29:00.984Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:29:16.011Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:29:30.399Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:29:30.804Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:29:45.964Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:30:00.987Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:30:15.996Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:30:30.376Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:30:30.814Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:30:46.053Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:31:01.036Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:31:16.062Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:31:30.363Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:31:30.829Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:31:46.047Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:32:01.159Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:32:16.172Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:32:30.326Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:32:30.894Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:32:46.161Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:33:01.116Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:33:16.140Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:33:30.330Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:33:30.929Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:33:46.169Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:34:01.170Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:34:16.158Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:54:52.370Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:07.089Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:07.554Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:22.078Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:22.625Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:37.062Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:37.723Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:51.834Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:55:52.690Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:06.920Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:07.615Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:21.874Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:22.667Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:36.888Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:37.667Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:51.871Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:56:52.683Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:06.936Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:07.682Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:21.854Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:22.716Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:37.090Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:37.673Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:51.972Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:57:52.756Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:06.933Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:07.752Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:21.947Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:22.718Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:36.919Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:37.734Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:52.061Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:58:52.718Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:59:07.167Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:59:07.762Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:59:22.201Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:59:22.773Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:59:36.943Z",
+      "total": 209,
+      "answered": 6,
+      "noAnswer": 0,
+      "busy": 0,
+      "failed": 0
+    },
+    {
+      "time": "2026-06-30T05:59:37.718Z",
       "total": 209,
       "answered": 6,
       "noAnswer": 0,

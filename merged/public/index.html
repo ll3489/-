@@ -254,6 +254,47 @@
 </head>
 <body>
 
+<div id="configPage" style="display:none;padding:40px 20px;max-width:500px;margin:0 auto">
+  <h2 style="font-size:20px;font-weight:600;margin-bottom:20px">开始使用</h2>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:24px">配置下方信息后即可开始使用</p>
+
+  <div style="background:var(--card);border-radius:8px;padding:16px;margin-bottom:16px">
+    <h3 style="font-size:14px;font-weight:600;margin-bottom:12px">无极CRM</h3>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">平台地址</label>
+      <input id="cfgWujiUrl" value="https://wuji.rpaab.com" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px">
+    </div>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">手机号</label>
+      <input id="cfgWujiPhone" placeholder="请输入无极CRM登录手机号" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px">
+    </div>
+    <div>
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">密码</label>
+      <input id="cfgWujiPwd" type="password" placeholder="请输入密码" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px">
+    </div>
+  </div>
+
+  <div style="background:var(--card);border-radius:8px;padding:16px;margin-bottom:20px">
+    <h3 style="font-size:14px;font-weight:600;margin-bottom:12px">VoiceFox 声狐</h3>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">平台地址</label>
+      <input id="cfgVfUrl" value="https://app.voicefox.cn" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px">
+    </div>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">邮箱</label>
+      <input id="cfgVfEmail" placeholder="请输入声狐登录邮箱" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px">
+    </div>
+    <div>
+      <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">密码</label>
+      <input id="cfgVfPwd" type="password" placeholder="请输入密码" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px">
+    </div>
+  </div>
+
+  <button class="btn primary" onclick="saveConfig()" style="width:100%;padding:10px;font-size:14px;justify-content:center">保存并启动</button>
+  <div id="cfgStatus" style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2)"></div>
+</div>
+
+<div id="appMain">
 <div class="header">
   <div class="header-left">
     <h1>无极CRM × VoiceFox</h1>
@@ -488,6 +529,7 @@
   </div>
 </div>
 
+</div>
 <script>
 // ===================================================================
 // Global State
@@ -1404,7 +1446,53 @@ async function loadServerCache() {
   } catch(e) {}
 }
 
+async function saveConfig() {
+  var btn = document.querySelector('#configPage .btn.primary');
+  btn.disabled = true; btn.textContent = '保存中...';
+  document.getElementById('cfgStatus').textContent = '';
+  try {
+    var r = await fetch('/api/config', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        wuji: {
+          baseUrl: document.getElementById('cfgWujiUrl').value.trim(),
+          phone: document.getElementById('cfgWujiPhone').value.trim(),
+          password: document.getElementById('cfgWujiPwd').value,
+        },
+        voicefox: {
+          baseUrl: document.getElementById('cfgVfUrl').value.trim(),
+          email: document.getElementById('cfgVfEmail').value.trim(),
+          password: document.getElementById('cfgVfPwd').value,
+        },
+      })
+    });
+    var d = await r.json();
+    if (d.success) {
+      document.getElementById('cfgStatus').textContent = '保存成功，正在重启...';
+      setTimeout(function() { location.reload(); }, 1500);
+    } else {
+      document.getElementById('cfgStatus').textContent = d.error || '保存失败';
+      btn.disabled = false; btn.textContent = '保存并启动';
+    }
+  } catch(e) {
+    document.getElementById('cfgStatus').textContent = '网络错误';
+    btn.disabled = false; btn.textContent = '保存并启动';
+  }
+}
+
+async function checkConfig() {
+  try {
+    var r = await fetch('/api/config');
+    var d = await r.json();
+    if (!d.configured) {
+      document.getElementById('appMain').style.display = 'none';
+      document.getElementById('configPage').style.display = 'block';
+    }
+  } catch(e) {}
+}
+
 function init() {
+  checkConfig();
   renderLeadsHeaders();
   renderCallsHeaders();
   loadCachedLeads();

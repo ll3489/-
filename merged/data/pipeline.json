@@ -1,63 +1,10 @@
 {
-  "queue": [
-    {
-      "leadsId": "2071832916518993920",
-      "phone": "19104484254",
-      "source": "系统接入",
-      "leadsName": "快乐些",
-      "createTime": "2026-06-30 13:47:14",
-      "attemptCount": 0,
-      "status": "pending",
-      "enqueuedAt": "2026-06-30T05:55:22.487Z",
-      "lastAttemptAt": null,
-      "lastHangupReason": null,
-      "taskId": null
-    },
-    {
-      "leadsId": "2071831663739109376",
-      "phone": "13654526699",
-      "source": "系统接入",
-      "leadsName": "爱车的男人",
-      "createTime": "2026-06-30 13:42:16",
-      "attemptCount": 0,
-      "status": "pending",
-      "enqueuedAt": "2026-06-30T05:55:22.487Z",
-      "lastAttemptAt": null,
-      "lastHangupReason": null,
-      "taskId": null
-    },
-    {
-      "leadsId": "2071825088903348224",
-      "phone": "15339876159",
-      "source": "系统接入",
-      "leadsName": "镜源",
-      "createTime": "2026-06-30 13:16:08",
-      "attemptCount": 0,
-      "status": "pending",
-      "enqueuedAt": "2026-06-30T05:16:23.473Z",
-      "lastAttemptAt": null,
-      "lastHangupReason": null,
-      "taskId": null
-    },
-    {
-      "leadsId": "2071817748405780480",
-      "phone": "13899528208",
-      "source": "系统接入",
-      "leadsName": "善良的强者",
-      "createTime": "2026-06-30 12:46:58",
-      "attemptCount": 0,
-      "status": "pending",
-      "enqueuedAt": "2026-06-30T04:47:24.483Z",
-      "lastAttemptAt": null,
-      "lastHangupReason": null,
-      "taskId": null
-    }
-  ],
+  "queue": [],
   "holdArea": [],
   "log": [],
   "stats": {
-    "totalEnqueued": 83,
-    "totalAnswered": 5,
+    "totalEnqueued": 109,
+    "totalAnswered": 6,
     "totalFailed": 0,
     "totalUnreachable": 21
   },

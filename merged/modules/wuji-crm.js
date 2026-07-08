@@ -1,5 +1,4 @@
 ﻿const fetch = require('node-fetch');
-const { chromium } = require('playwright');
 const querystring = require('querystring');
 const { save, load } = require('./persist');
 const { getConfig, setConfig } = require('./config');
@@ -65,34 +64,33 @@ class WujiCRM {
   async doLogin() {
     let browser = null;
     try {
-      browser = await chromium.launch({ headless: true });
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await page.goto(getWujiConfig().baseUrl, { waitUntil: 'load', timeout: 60000 }).catch(() => {});
-      await page.waitForTimeout(5000);
-      await page.fill('input[placeholder="请输入手机号"]', getWujiConfig().phone);
-      await page.click('button:has-text("继续")');
-      await page.waitForSelector('input[placeholder="请输入密码"]', { timeout: 15000 });
-      await page.fill('input[placeholder="请输入密码"]', getWujiConfig().password);
-      await page.click('button:has-text("登录")');
-      let ok = false;
-      for (let i = 0; i < 30; i++) {
-        await page.waitForTimeout(1000);
-        if (!page.url().includes('login')) { ok = true; break; }
+      const cfg = getWujiConfig();
+      if (!cfg.phone || !cfg.password) {
+        this.loginError = '请配置无极CRM登录凭证';
+        this.isLoggedIn = false; return false;
       }
-      if (!ok) { this.loginError = '登录后未跳转'; this.isLoggedIn = false; return false; }
-      const token = await page.evaluate(() => {
-        const v = localStorage.getItem('Admin-Token');
-        return v ? JSON.parse(v).data : null;
+      // Use direct API login instead of Playwright
+      const resp = await fetch(cfg.baseUrl + '/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        body: JSON.stringify({ username: cfg.phone, password: cfg.password }),
       });
-      if (!token) { this.loginError = '未找到Token'; this.isLoggedIn = false; return false; }
-      this.adminToken = token; this.isLoggedIn = true; this.loginError = null;
-      console.log('[无极CRM] 登录成功');
-      return true;
+      const data = await resp.json();
+      if (data.code === 0 && data.data && data.data.adminToken) {
+        this.adminToken = data.data.adminToken;
+        this.isLoggedIn = true;
+        this.loginError = null;
+        console.log('[无极CRM] 登录成功');
+        return true;
+      } else {
+        this.loginError = data.msg || '登录失败';
+        this.isLoggedIn = false;
+        return false;
+      }
     } catch (err) {
-      this.loginError = err.message; this.isLoggedIn = false; return false;
-    } finally {
-      if (browser) try { await browser.close(); } catch(e) {}
+      this.loginError = err.message;
+      this.isLoggedIn = false;
+      return false;
     }
   }
 

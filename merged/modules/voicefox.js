@@ -1,4 +1,4 @@
-﻿const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 const { save, load } = require('./persist');
 const { getConfig, setConfig } = require('./config');
@@ -177,7 +177,7 @@ class VoiceFox {
   }
 
   // ---------- Task API ----------
-  async createTask(phone, name, assistantVid = 42558) {
+  async createTask(phone, name, assistantVid = 43790) {
     this.ensureLogin();
     const today = new Date().toISOString().slice(0, 10);
     const payload = {

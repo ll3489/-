@@ -638,7 +638,7 @@ async function showTaskDetail(taskId) {
 async function createTask() {
   var phone = document.getElementById('createPhone').value.trim();
   var name = document.getElementById('createName').value.trim();
-  var vid = parseInt(document.getElementById('createVid').value) || 42558;
+  var vid = parseInt(document.getElementById('createVid').value) || 43790;
   if (!phone) { document.getElementById('createResult').innerHTML = '<span style="color:var(--red)">请填写手机号</span>'; return; }
   document.getElementById('createResult').innerHTML = '正在创建任务...';
   try {

@@ -387,7 +387,7 @@
       </div>
       <div class="field">
         <label>AI 版本 ID</label>
-        <input type="number" id="createVid" value="42558" style="width:80px">
+        <input type="number" id="createVid" value="43790" style="width:80px">
       </div>
       <div class="field" style="align-self:flex-end">
         <button class="btn primary" onclick="createTask()">创建外呼任务</button>
@@ -1175,7 +1175,7 @@ async function showTaskDetail(taskId) {
 async function createTask() {
   var phone = document.getElementById('createPhone').value.trim();
   var name = document.getElementById('createName').value.trim();
-  var vid = parseInt(document.getElementById('createVid').value) || 42558;
+  var vid = parseInt(document.getElementById('createVid').value) || 43790;
   if (!phone) { document.getElementById('createResult').innerHTML = '<span style="color:var(--red)">请填写手机号</span>'; return; }
   document.getElementById('createResult').innerHTML = '正在创建任务...';
   try {
